@@ -11,6 +11,7 @@ import java.util.*;
 public class CircuitPanel extends JPanel {
 
     java.util.List<CircuitComponent> components = new ArrayList<CircuitComponent>();
+    java.util.List<CircuitConnection> connections = new ArrayList<CircuitConnection>();
 
     public CircuitPanel() {
         buildTestComponents();
@@ -32,7 +33,10 @@ public class CircuitPanel extends JPanel {
                     if (!e.isShiftDown())
                         cc.setSelected(false);
                     if (cc.isInside(e.getX(), e.getY()))
-                        cc.setSelected(true);
+                        if (e.isShiftDown())
+                            cc.setSelected(!cc.isSelected());
+                        else
+                            cc.setSelected(true);
                 }
 
                 repaint();
@@ -63,10 +67,16 @@ public class CircuitPanel extends JPanel {
     }
 
     private void buildTestComponents() {
-        components.add(new CircuitComponent(20, 20, 30, 40));
-        components.add( new CircuitComponent(100,20,60,40));
-        components.add(new CircuitComponent(20, 80, 10, 40));
-        components.add(new CircuitComponent(200, 140, 50, 40));
+        CircuitComponent c1, c2, c3, c4;
+        components.add(c1 = new CircuitComponent(20, 20, 30, 40));
+        components.add(c2 = new CircuitComponent(100,20,60,40));
+        components.add(c3 = new CircuitComponent(20, 80, 10, 40));
+        components.add(c4 = new CircuitComponent(200, 140, 50, 40));
+
+        connections.add(new CircuitConnection(c1, c2));
+        connections.add(new CircuitConnection(c3, c2));
+        connections.add(new CircuitConnection(c3, c4));
+        connections.add(new CircuitConnection(c1, c4));
     }
 
     @Override
@@ -81,6 +91,14 @@ public class CircuitPanel extends JPanel {
             else
                 graphics.setColor(Color.BLACK);
             graphics.drawRect(cc.x, cc.y, cc.w, cc.h);
+        }
+
+        graphics.setColor(Color.BLUE);
+        for (CircuitConnection con: connections) {
+            graphics.drawLine(
+                    con.src.getMidX(), con.src.getMidY(),
+                    con.dest.getMidX(), con.dest.getMidY()
+                    );
         }
     }
 }

@@ -23,4 +23,12 @@ public class CircuitComponent {
     public boolean isSelected() {
         return selected;
     }
+
+    public int getMidX() {
+        return x + w/2;
+    }
+
+    public int getMidY() {
+        return y + h/2;
+    }
 }
