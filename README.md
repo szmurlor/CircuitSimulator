@@ -1,5 +1,7 @@
 # CircuitSimulator
 
+**THIS IS A PROJECT FOR TEACHING GUI DESIGN AND IMPLEMENTATION! DO NOT TRY TO USE IT FOR PROFESSIONAL NGSPICE SIMULATIONS! IT SIMPLY WON"T WORK.**
+
 Simple project developed on the course of Graphical User Interface Design on Electrical Engineering bachelor 
 studies at Faculty of Electrical Engineering, Warsaw University of Technology, Poland.
 
