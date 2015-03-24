@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 
 /**
@@ -17,19 +18,48 @@ public class CircuitPanel extends JPanel {
     }
 
     private void addActions() {
-        addMouseListener(new MouseAdapter() {
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+
+            int oldx, oldy;
+
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
+                oldx = e.getX();
+                oldy = e.getY();
 
                 for (CircuitComponent cc: components) {
+                    if (!e.isShiftDown())
+                        cc.setSelected(false);
                     if (cc.isInside(e.getX(), e.getY()))
                         cc.setSelected(true);
                 }
 
                 repaint();
             }
-        });
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+
+                int dx = e.getX() - oldx;
+                int dy = e.getY() - oldy;
+
+                for (CircuitComponent cc: components) {
+                    if (cc.isSelected()) {
+                        cc.x += dx;
+                        cc.y += dy;
+                    }
+                }
+
+                oldx = e.getX();
+                oldy = e.getY();
+
+                repaint();
+            }
+        };
+        addMouseListener(mouseAdapter);
+        addMouseMotionListener(mouseAdapter);
     }
 
     private void buildTestComponents() {
@@ -43,7 +73,7 @@ public class CircuitPanel extends JPanel {
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        graphics.drawString("Circuits Simulator v0.1Alpha", 5, 20);
+        graphics.drawString("Circuits Simulator " + Main.VERSION, 5, 20);
 
         for (CircuitComponent cc: components) {
             if (cc.isSelected())
