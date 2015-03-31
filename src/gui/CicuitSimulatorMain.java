@@ -50,6 +50,8 @@ public class CicuitSimulatorMain implements ActionListener {
             ResistorView rv = new ResistorView(getRootPanel().getWidth() / 2,
                     getRootPanel().getHeight() / 2);
             circuitPanel.addCircuitComponent(rv);
+        } else if (actionEvent.getActionCommand().equals("repaint")) {
+            circuitPanel.repaint();
         }
     }
 }

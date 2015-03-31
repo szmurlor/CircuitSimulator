@@ -5,6 +5,8 @@ import gui.Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -12,7 +14,7 @@ import java.util.*;
 /**
  * Created by GR5 on 24.03.15.
  */
-public class CircuitPanel extends JPanel {
+public class CircuitPanel extends JPanel implements ActionListener {
 
     java.util.List<CircuitComponent> components = new ArrayList<CircuitComponent>();
     java.util.List<CircuitConnection> connections = new ArrayList<CircuitConnection>();
@@ -34,6 +36,7 @@ public class CircuitPanel extends JPanel {
 
                     if (cc != null) {
                         ElectricalComponentDialog dlg = new ElectricalComponentDialog(cc);
+                        dlg.addActionListener( CircuitPanel.this );
                         dlg.pack();
                         dlg.setVisible(true);
                     }
@@ -134,5 +137,12 @@ public class CircuitPanel extends JPanel {
     public void addCircuitComponent(ResistorView rv) {
         components.add(rv);
         repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        if (actionEvent.getActionCommand().equals("repaint")) {
+            repaint();
+        }
     }
 }

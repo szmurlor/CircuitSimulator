@@ -1,9 +1,12 @@
 package gui;
 
 import view.CircuitComponent;
+import view.CircuitPanel;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ElectricalComponentDialog extends JDialog {
     private JPanel contentPane;
@@ -14,6 +17,8 @@ public class ElectricalComponentDialog extends JDialog {
     private JRadioButton rdVertical;
 
     private CircuitComponent current;
+
+    private List<ActionListener> listeners = new ArrayList<ActionListener>();
 
     public ElectricalComponentDialog(CircuitComponent cc) {
         this.current = cc;
@@ -63,11 +68,29 @@ public class ElectricalComponentDialog extends JDialog {
 
     private void onOK() {
 // add your code here
+        form2Data();
+
+        for (ActionListener al: listeners) {
+            ActionEvent ae = new ActionEvent(this, 1, "repaint");
+            al.actionPerformed(ae);
+        }
         dispose();
+    }
+
+    private void form2Data() {
+        current.name = txtName.getText();
+        if (rdVertical.isSelected())
+            current.setOrientation(CircuitComponent.Orientation.Vertical);
+        else
+            current.setOrientation(CircuitComponent.Orientation.Horizontal);
     }
 
     private void onCancel() {
 // add your code here if necessary
         dispose();
+    }
+
+    public void addActionListener(ActionListener al) {
+        listeners.add(al);
     }
 }
