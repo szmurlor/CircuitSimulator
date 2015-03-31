@@ -131,7 +131,7 @@ public class CircuitPanel extends JPanel implements ActionListener {
     }
 
     private void buildTestComponents() {
-        CircuitComponent c1, c2, c3, c4, c5, c6;
+        CircuitComponent c1, c2, c3, c4, c5, c6, c7;
         components.add(c1 = new CircuitComponent(20, 20, 30, 40));
         components.add(c2 = new CircuitComponent(100,20,60,40));
         components.add(c3 = new CircuitComponent(20, 80, 10, 40));
@@ -143,6 +143,8 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
         c5.name = "R5";
         c6.name = "R6";
+
+        components.add(c7 = new CapacitorView(30, 300));
 
         connections.add(new CircuitConnection(c1, c2));
         connections.add(new CircuitConnection(c3, c2));
@@ -169,8 +171,8 @@ public class CircuitPanel extends JPanel implements ActionListener {
         }
     }
 
-    public void addCircuitComponent(ResistorView rv) {
-        components.add(rv);
+    public void addCircuitComponent(CircuitComponent c) {
+        components.add(c);
         repaint();
     }
 

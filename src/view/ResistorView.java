@@ -11,19 +11,17 @@ public class ResistorView extends CircuitComponent {
 
     private int d = 5;
     private int hr = 3;
-    private List<Terminal> terminals = new LinkedList<Terminal>();
 
     public ResistorView(int x, int y) {
         super(x, y, 40, 10);
 
-        terminals.add(new Terminal(this, -2*hr, h/2 - hr, hr));
-        terminals.add(new Terminal(this, w, h/2 - hr, hr));
+        getTerminals().add(new Terminal(this, -2 * hr, h / 2 - hr, hr));
+        getTerminals().add(new Terminal(this, w, h / 2 - hr, hr));
     }
 
     @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
-
 
         if (getOrientation() == Orientation.Horizontal) {
             int by = y + h/2;
@@ -63,16 +61,9 @@ public class ResistorView extends CircuitComponent {
                 g.drawString(name, x + h + 2, y + w/2 + g.getFontMetrics().getHeight() / 2);
         }
 
-        for (Terminal t: terminals) {
+        for (Terminal t: getTerminals()) {
             t.paintComponent(g);
         }
     }
 
-    public List<Terminal> getTerminals() {
-        return terminals;
-    }
-
-    public void setTerminals(List<Terminal> terminals) {
-        this.terminals = terminals;
-    }
 }

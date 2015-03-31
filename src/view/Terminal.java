@@ -61,12 +61,12 @@ public class Terminal {
 
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        if (parent.isSelected()){
-            g.setColor(Color.RED);
+        if (hover) {
+            g2d.setStroke(new BasicStroke(2));
+            g.setColor(Color.BLUE);
         } else {
-            if (hover) {
-                g2d.setStroke(new BasicStroke(2));
-                g.setColor(Color.BLUE);
+            if (parent.isSelected()){
+                g.setColor(Color.RED);
             } else {
                 g2d.setStroke(new BasicStroke(1));
                 g.setColor(Color.BLACK);

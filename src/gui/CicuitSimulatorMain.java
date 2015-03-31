@@ -1,5 +1,6 @@
 package gui;
 
+import view.CapacitorView;
 import view.CircuitPanel;
 import view.ResistorView;
 
@@ -28,12 +29,17 @@ public class CicuitSimulatorMain implements ActionListener {
     }
 
     private void setupToolbar() {
-        JButton btnResistor = new JButton();
-        btnResistor.setActionCommand("addResistor");
-        btnResistor.setText("Rezystor");
-        btnResistor.addActionListener(this);
+        JButton btn = new JButton();
+        btn.setActionCommand("addResistor");
+        btn.setText("Rezystor");
+        btn.addActionListener(this);
+        toolbar.add(btn);
 
-        toolbar.add(btnResistor);
+        btn = new JButton();
+        btn.setActionCommand("addCapacitor");
+        btn.setText("Kondensator");
+        btn.addActionListener(this);
+        toolbar.add(btn);
     }
 
     public JPanel getRootPanel() {
@@ -50,6 +56,10 @@ public class CicuitSimulatorMain implements ActionListener {
             ResistorView rv = new ResistorView(getRootPanel().getWidth() / 2,
                     getRootPanel().getHeight() / 2);
             circuitPanel.addCircuitComponent(rv);
+        } else if (actionEvent.getActionCommand().equals("addCapacitor")) {
+            CapacitorView cv = new CapacitorView(getRootPanel().getWidth() / 2,
+                    getRootPanel().getHeight() / 2);
+            circuitPanel.addCircuitComponent(cv);
         } else if (actionEvent.getActionCommand().equals("repaint")) {
             circuitPanel.repaint();
         }
