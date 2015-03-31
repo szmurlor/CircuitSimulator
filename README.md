@@ -29,6 +29,7 @@ Opis kolejnych etapów:
     * Przesuwanie wielu z SHIFT
     * Dodanie rysowania połączeń między komponentami (jeszcze bez możliwości własnego definiowania połączeń)
 2. Zajęcia 2
+    * Organizacja w pakiety: gui, domain.cicuitcomponents, view
     * Udoskonalenie wizualizaji komponentów obwodu elektrycznego (poprawne rysowanie symboli, dodanie węzłów wejściowych i wyjściowych do kompoentów)
     * Dodanie możliwości definiowania połączeń między węzłami komponentów
     * Reakcja na podwójne kliknięcie na komponencie w celu wyświetlenia okna dialogowego z włąściwościami komponentu
