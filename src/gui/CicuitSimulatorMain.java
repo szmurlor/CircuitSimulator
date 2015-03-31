@@ -1,3 +1,7 @@
+package gui;
+
+import view.CircuitPanel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

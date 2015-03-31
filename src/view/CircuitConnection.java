@@ -1,3 +1,5 @@
+package view;
+
 /**
  * Created by GR5 on 24.03.15.
  */

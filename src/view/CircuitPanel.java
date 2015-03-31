@@ -1,8 +1,11 @@
+package view;
+
+import gui.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.*;
 
 /**
@@ -67,11 +70,14 @@ public class CircuitPanel extends JPanel {
     }
 
     private void buildTestComponents() {
-        CircuitComponent c1, c2, c3, c4;
+        CircuitComponent c1, c2, c3, c4, c5, c6;
         components.add(c1 = new CircuitComponent(20, 20, 30, 40));
         components.add(c2 = new CircuitComponent(100,20,60,40));
         components.add(c3 = new CircuitComponent(20, 80, 10, 40));
         components.add(c4 = new CircuitComponent(200, 140, 50, 40));
+        components.add(c5 = new ResistorView(150, 200));
+        components.add(c6 = new ResistorView(10, 250));
+        c6.setOrientation(CircuitComponent.Orientation.Vertical);
 
         connections.add(new CircuitConnection(c1, c2));
         connections.add(new CircuitConnection(c3, c2));
@@ -86,11 +92,7 @@ public class CircuitPanel extends JPanel {
         graphics.drawString("Circuits Simulator " + Main.VERSION, 5, 20);
 
         for (CircuitComponent cc: components) {
-            if (cc.isSelected())
-                graphics.setColor(Color.RED);
-            else
-                graphics.setColor(Color.BLACK);
-            graphics.drawRect(cc.x, cc.y, cc.w, cc.h);
+            cc.paintComponent(graphics);
         }
 
         graphics.setColor(Color.BLUE);

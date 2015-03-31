@@ -1,3 +1,7 @@
+package gui;
+
+import gui.CicuitSimulatorMain;
+
 import javax.swing.*;
 
 public class Main {
