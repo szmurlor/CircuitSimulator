@@ -1,8 +1,12 @@
+package view;
+
+import gui.CicuitComponentDialog;
+import gui.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.*;
 
 /**
@@ -10,7 +14,7 @@ import java.util.*;
  */
 public class CircuitPanel extends JPanel {
 
-    java.util.List<CircuitComponent> components = new ArrayList<CircuitComponent>();
+    java.util.List<CircuitComponentView> components = new ArrayList<CircuitComponentView>();
     java.util.List<CircuitConnection> connections = new ArrayList<CircuitConnection>();
 
     public CircuitPanel() {
@@ -24,12 +28,21 @@ public class CircuitPanel extends JPanel {
             int oldx, oldy;
 
             @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() % 2 == 0 && !e.isConsumed()) {
+                    CicuitComponentDialog dialog = new CicuitComponentDialog();
+                    dialog.pack();
+                    dialog.setVisible(true);
+                }
+            }
+
+            @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 oldx = e.getX();
                 oldy = e.getY();
 
-                for (CircuitComponent cc: components) {
+                for (CircuitComponentView cc: components) {
                     if (!e.isShiftDown())
                         cc.setSelected(false);
                     if (cc.isInside(e.getX(), e.getY()))
@@ -49,7 +62,7 @@ public class CircuitPanel extends JPanel {
                 int dx = e.getX() - oldx;
                 int dy = e.getY() - oldy;
 
-                for (CircuitComponent cc: components) {
+                for (CircuitComponentView cc: components) {
                     if (cc.isSelected()) {
                         cc.x += dx;
                         cc.y += dy;
@@ -61,17 +74,22 @@ public class CircuitPanel extends JPanel {
 
                 repaint();
             }
+
+
         };
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
     }
 
     private void buildTestComponents() {
-        CircuitComponent c1, c2, c3, c4;
-        components.add(c1 = new CircuitComponent(20, 20, 30, 40));
-        components.add(c2 = new CircuitComponent(100,20,60,40));
-        components.add(c3 = new CircuitComponent(20, 80, 10, 40));
-        components.add(c4 = new CircuitComponent(200, 140, 50, 40));
+        CircuitComponentView c1, c2, c3, c4, c5, c6;
+        components.add(c1 = new CircuitComponentView(20, 20, 30, 40));
+        components.add(c2 = new CircuitComponentView(100,20,60,40));
+        components.add(c3 = new CircuitComponentView(20, 80, 10, 40));
+        components.add(c4 = new CircuitComponentView(200, 140, 50, 40));
+        components.add(c5 = new ResistorView(100, 240));
+        components.add(c6 = new ResistorView(130, 280));
+        c6.setOrientation(CircuitComponentView.Orientation.Vertical);
 
         connections.add(new CircuitConnection(c1, c2));
         connections.add(new CircuitConnection(c3, c2));
@@ -85,20 +103,16 @@ public class CircuitPanel extends JPanel {
 
         graphics.drawString("Circuits Simulator " + Main.VERSION, 5, 20);
 
-        for (CircuitComponent cc: components) {
-            if (cc.isSelected())
-                graphics.setColor(Color.RED);
-            else
-                graphics.setColor(Color.BLACK);
-            graphics.drawRect(cc.x, cc.y, cc.w, cc.h);
+        for (CircuitComponentView cc: components) {
+            cc.paintComponent(graphics);
         }
 
-        graphics.setColor(Color.BLUE);
         for (CircuitConnection con: connections) {
-            graphics.drawLine(
-                    con.src.getMidX(), con.src.getMidY(),
-                    con.dest.getMidX(), con.dest.getMidY()
-                    );
+            con.paint(graphics);
         }
+    }
+
+    public void addElectricalComponent(ResistorView r) {
+        components.add(r);
     }
 }
