@@ -6,6 +6,7 @@ import view.ResistorView;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 /**
  * Created by GR5 on 24.03.15.
@@ -23,10 +24,14 @@ public class CicuitSimulatorMain implements ActionListener {
                 System.exit(0);
             }
         });
+
+
         JButton resistor = new JButton();
         resistor.setActionCommand("addResistor");
         resistor.setToolTipText("Dodaj nowy rezystor");
         resistor.addActionListener(this);
+        URL imageURL = CicuitSimulatorMain.class.getResource("images/resistor.gif");
+        resistor.setIcon(new ImageIcon(imageURL));
         toolbar.add(resistor);
     }
 

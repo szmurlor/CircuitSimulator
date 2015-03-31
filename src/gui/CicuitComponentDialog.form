@@ -106,4 +106,10 @@
       </grid>
     </children>
   </grid>
+  <buttonGroups>
+    <group name="bgOrientation">
+      <member id="c0b9"/>
+      <member id="1d91"/>
+    </group>
+  </buttonGroups>
 </form>
