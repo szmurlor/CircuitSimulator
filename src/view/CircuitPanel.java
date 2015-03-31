@@ -33,7 +33,7 @@ public class CircuitPanel extends JPanel {
                     CircuitComponent cc = findComponent(mouseEvent.getX(),mouseEvent.getY());
 
                     if (cc != null) {
-                        ElectricalComponentDialog dlg = new ElectricalComponentDialog();
+                        ElectricalComponentDialog dlg = new ElectricalComponentDialog(cc);
                         dlg.pack();
                         dlg.setVisible(true);
                     }

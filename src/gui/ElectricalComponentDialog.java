@@ -1,5 +1,7 @@
 package gui;
 
+import view.CircuitComponent;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -8,10 +10,14 @@ public class ElectricalComponentDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField txtName;
-    private JRadioButton poziomaRadioButton;
-    private JRadioButton pionowaRadioButton;
+    private JRadioButton rdHorizontal;
+    private JRadioButton rdVertical;
 
-    public ElectricalComponentDialog() {
+    private CircuitComponent current;
+
+    public ElectricalComponentDialog(CircuitComponent cc) {
+        this.current = cc;
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -42,6 +48,17 @@ public class ElectricalComponentDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        data2Form();
+    }
+
+    private void data2Form() {
+        txtName.setText( current.name );
+        if (current.getOrientation().equals(CircuitComponent.Orientation.Horizontal)) {
+            rdHorizontal.setSelected(true);
+        } else {
+            rdVertical.setSelected(true);
+        }
     }
 
     private void onOK() {
