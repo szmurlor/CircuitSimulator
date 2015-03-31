@@ -1,21 +1,29 @@
 package view;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by GR4 on 31.03.15.
  */
 public class ResistorView extends CircuitComponent {
+
+    private int d = 5;
+    private int hr = 3;
+    private List<Terminal> terminals = new LinkedList<Terminal>();
+
     public ResistorView(int x, int y) {
         super(x, y, 40, 10);
+
+        terminals.add(new Terminal(this, -2*hr, h/2 - hr, hr));
+        terminals.add(new Terminal(this, w, h/2 - hr, hr));
     }
 
     @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
 
-        int d = 5;
-        int hr = 3;
 
         if (getOrientation() == Orientation.Horizontal) {
             int by = y + h/2;
@@ -32,9 +40,6 @@ public class ResistorView extends CircuitComponent {
             g.drawLine(x + d + 9 * hr, by + hr, x + d + 10 * hr, by);
 
             g.drawLine(x + w - d, by, x + w, by);
-
-            g.drawArc(x - 2 * hr, by - hr, 2 * hr, 2 * hr, 0, 360);
-            g.drawArc(x + w, by - hr, 2 * hr, 2 * hr, 0, 360);
 
             if (name != null && name.length() > 0)
                 g.drawString(name, x + 2, y - 2);
@@ -54,13 +59,20 @@ public class ResistorView extends CircuitComponent {
 
             g.drawLine(bx, y + w - d, bx, y + w);
 
-            g.drawArc(bx - hr, y - 2*hr, 2 * hr, 2 * hr, 0, 360);
-            g.drawArc(bx - hr, y+w, 2 * hr, 2 * hr, 0, 360);
-
             if (name != null && name.length() > 0)
                 g.drawString(name, x + h + 2, y + w/2 + g.getFontMetrics().getHeight() / 2);
-
         }
 
+        for (Terminal t: terminals) {
+            t.paintComponent(g);
+        }
+    }
+
+    public List<Terminal> getTerminals() {
+        return terminals;
+    }
+
+    public void setTerminals(List<Terminal> terminals) {
+        this.terminals = terminals;
     }
 }

@@ -30,6 +30,23 @@ public class CircuitPanel extends JPanel implements ActionListener {
             int oldx, oldy;
 
             @Override
+            public void mouseMoved(MouseEvent e) {
+                if (!e.isShiftDown()) {
+                    CircuitComponent c = findComponent(e.getX(), e.getY());
+                    clearTerminalsHover();
+                    if (c == null) {
+                        Terminal t = findTerminal(e.getX(), e.getY());
+
+                        if (t != null) {
+                            t.setHover(true);
+                        }
+                    }
+                }
+
+                repaint();
+            }
+
+            @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount() % 2 == 0 && !mouseEvent.isConsumed()) {
                     CircuitComponent cc = findComponent(mouseEvent.getX(),mouseEvent.getY());
@@ -84,6 +101,24 @@ public class CircuitPanel extends JPanel implements ActionListener {
         };
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
+    }
+
+    private Terminal findTerminal(int x, int y) {
+        for (CircuitComponent cc: components) {
+            for (Terminal t: cc.getTerminals()) {
+                if (t.isInside(x,y))
+                    return t;
+            }
+        }
+        return null;
+    }
+
+    private void clearTerminalsHover() {
+        for (CircuitComponent cc: components) {
+            for (Terminal t: cc.getTerminals()) {
+                t.setHover(false);
+            }
+        }
     }
 
     private CircuitComponent findComponent(int x, int y) {

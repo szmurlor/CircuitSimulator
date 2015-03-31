@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Created by GR5 on 24.03.15.
@@ -65,5 +67,9 @@ public class CircuitComponent {
 
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
+    }
+
+    public Collection<Terminal> getTerminals() {
+        return new LinkedList<Terminal>();
     }
 }
