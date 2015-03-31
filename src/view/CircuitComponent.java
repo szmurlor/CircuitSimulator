@@ -9,6 +9,7 @@ public class CircuitComponent {
     public enum Orientation {Horizontal, Vertical}
 
     public int x,y,w,h;
+    public String name;
 
     private Orientation orientation = Orientation.Horizontal;
     private boolean selected;
@@ -46,6 +47,9 @@ public class CircuitComponent {
     public void paintComponent(Graphics graphics) {
         setColorIfSelected(graphics);
         graphics.drawRect(x, y, w, h);
+
+        if (name != null && name.length() > 0)
+            graphics.drawString(name, x + 2, y - 2);
     }
 
     protected void setColorIfSelected(Graphics graphics) {

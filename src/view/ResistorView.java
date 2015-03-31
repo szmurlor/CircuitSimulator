@@ -35,6 +35,9 @@ public class ResistorView extends CircuitComponent {
 
             g.drawArc(x - 2 * hr, by - hr, 2 * hr, 2 * hr, 0, 360);
             g.drawArc(x + w, by - hr, 2 * hr, 2 * hr, 0, 360);
+
+            if (name != null && name.length() > 0)
+                g.drawString(name, x + 2, y - 2);
         } else {
             int bx = x + h/2;
             g.drawLine(bx, y, bx, y+d);
@@ -53,6 +56,11 @@ public class ResistorView extends CircuitComponent {
 
             g.drawArc(bx - hr, y - 2*hr, 2 * hr, 2 * hr, 0, 360);
             g.drawArc(bx - hr, y+w, 2 * hr, 2 * hr, 0, 360);
+
+            if (name != null && name.length() > 0)
+                g.drawString(name, x + h + 2, y + w/2 + g.getFontMetrics().getHeight() / 2);
+
         }
+
     }
 }

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class Main {
 
-    public static final String VERSION = "v0.1Alpha";
+    public static final String VERSION = "v0.2Alpha";
 
     public static void main(String[] args) {
         System.out.println("Hello World!");

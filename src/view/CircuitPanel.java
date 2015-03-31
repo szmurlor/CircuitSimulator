@@ -98,9 +98,13 @@ public class CircuitPanel extends JPanel {
         components.add(c2 = new CircuitComponent(100,20,60,40));
         components.add(c3 = new CircuitComponent(20, 80, 10, 40));
         components.add(c4 = new CircuitComponent(200, 140, 50, 40));
+        c4.name = "Prostokącik";
         components.add(c5 = new ResistorView(150, 200));
         components.add(c6 = new ResistorView(10, 250));
         c6.setOrientation(CircuitComponent.Orientation.Vertical);
+
+        c5.name = "R5";
+        c6.name = "R6";
 
         connections.add(new CircuitConnection(c1, c2));
         connections.add(new CircuitConnection(c3, c2));
