@@ -1,5 +1,6 @@
 package view;
 
+import gui.ElectricalComponentDialog;
 import gui.Main;
 
 import javax.swing.*;
@@ -25,6 +26,19 @@ public class CircuitPanel extends JPanel {
         MouseAdapter mouseAdapter = new MouseAdapter() {
 
             int oldx, oldy;
+
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() % 2 == 0 && !mouseEvent.isConsumed()) {
+                    CircuitComponent cc = findComponent(mouseEvent.getX(),mouseEvent.getY());
+
+                    if (cc != null) {
+                        ElectricalComponentDialog dlg = new ElectricalComponentDialog();
+                        dlg.pack();
+                        dlg.setVisible(true);
+                    }
+                }
+            }
 
             @Override
             public void mousePressed(MouseEvent e) {
@@ -69,6 +83,15 @@ public class CircuitPanel extends JPanel {
         addMouseMotionListener(mouseAdapter);
     }
 
+    private CircuitComponent findComponent(int x, int y) {
+        for (CircuitComponent cc: components) {
+            if (cc.isInside(x,y)) {
+                return cc;
+            }
+        }
+        return null;
+    }
+
     private void buildTestComponents() {
         CircuitComponent c1, c2, c3, c4, c5, c6;
         components.add(c1 = new CircuitComponent(20, 20, 30, 40));
@@ -102,5 +125,10 @@ public class CircuitPanel extends JPanel {
                     con.dest.getMidX(), con.dest.getMidY()
                     );
         }
+    }
+
+    public void addCircuitComponent(ResistorView rv) {
+        components.add(rv);
+        repaint();
     }
 }

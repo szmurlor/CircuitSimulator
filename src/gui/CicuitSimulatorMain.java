@@ -1,6 +1,7 @@
 package gui;
 
 import view.CircuitPanel;
+import view.ResistorView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +10,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by GR5 on 24.03.15.
  */
-public class CicuitSimulatorMain {
+public class CicuitSimulatorMain implements ActionListener {
     private JPanel rootPanel;
     private JButton zamknijButton;
     private CircuitPanel circuitPanel;
@@ -30,6 +31,7 @@ public class CicuitSimulatorMain {
         JButton btnResistor = new JButton();
         btnResistor.setActionCommand("addResistor");
         btnResistor.setText("Rezystor");
+        btnResistor.addActionListener(this);
 
         toolbar.add(btnResistor);
     }
@@ -40,5 +42,14 @@ public class CicuitSimulatorMain {
 
     private void createUIComponents() {
         circuitPanel = new CircuitPanel();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        if (actionEvent.getActionCommand().equals("addResistor")) {
+            ResistorView rv = new ResistorView(getRootPanel().getWidth() / 2,
+                    getRootPanel().getHeight() / 2);
+            circuitPanel.addCircuitComponent(rv);
+        }
     }
 }
