@@ -13,6 +13,7 @@ public class CicuitSimulatorMain {
     private JPanel rootPanel;
     private JButton zamknijButton;
     private CircuitPanel circuitPanel;
+    private JToolBar toolbar;
 
     public CicuitSimulatorMain() {
         zamknijButton.addActionListener(new ActionListener() {
@@ -21,6 +22,16 @@ public class CicuitSimulatorMain {
                 System.exit(0);
             }
         });
+
+        setupToolbar();
+    }
+
+    private void setupToolbar() {
+        JButton btnResistor = new JButton();
+        btnResistor.setActionCommand("addResistor");
+        btnResistor.setText("Rezystor");
+
+        toolbar.add(btnResistor);
     }
 
     public JPanel getRootPanel() {
