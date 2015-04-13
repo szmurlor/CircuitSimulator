@@ -10,20 +10,28 @@ public class Terminal {
     CircuitComponent parent;
     private boolean hover;
 
+    public int getX() {
+        if (parent.getOrientation().equals(CircuitComponent.Orientation.Horizontal))
+            return parent.x + dx;
+        else
+            return parent.x + dy;
+
+    }
+
+    public int getY() {
+        if (parent.getOrientation().equals(CircuitComponent.Orientation.Horizontal))
+            return parent.y + dy;
+        else
+            return parent.y + dx;
+    }
+
     public boolean isInside(int x, int y) {
         int xmin, xmax, ymin, ymax;
 
-        if (parent.getOrientation().equals(CircuitComponent.Orientation.Horizontal)) {
-            xmin = parent.x + dx - 2 * r;
-            xmax = parent.x + dx + 2 * r;
-            ymin = parent.y + dy - 2 * r;
-            ymax = parent.y + dy + 2 * r;
-        } else {
-            xmin = parent.x + dy - 2 * r;
-            xmax = parent.x + dy + 2 * r;
-            ymin = parent.y + dx - 2 * r;
-            ymax = parent.y + dx + 2 * r;
-        }
+        xmin = getX() - 2 * r;
+        xmax = getX() + 2 * r;
+        ymin = getY() - 2 * r;
+        ymax = getY() + 2 * r;
 
         return (x >= xmin && x <= xmax && y >= ymin && y <= ymax);
     }
@@ -87,5 +95,9 @@ public class Terminal {
 
     public boolean isHover() {
         return hover;
+    }
+
+    public CircuitComponent getParent() {
+        return parent;
     }
 }

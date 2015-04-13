@@ -40,6 +40,7 @@ public class CicuitSimulatorMain implements ActionListener {
         btn.setText("Kondensator");
         btn.addActionListener(this);
         toolbar.add(btn);
+
     }
 
     public JPanel getRootPanel() {

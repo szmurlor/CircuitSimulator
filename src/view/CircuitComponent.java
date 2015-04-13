@@ -7,7 +7,8 @@ import java.util.*;
 /**
  * Created by GR5 on 24.03.15.
  */
-public class CircuitComponent {
+public abstract class CircuitComponent {
+
     public enum Orientation {Horizontal, Vertical}
 
     public int x,y,w,h;
@@ -25,12 +26,28 @@ public class CircuitComponent {
         this.h = h;
     }
 
+    public Terminal getFirstTerminal() {
+        if (getTerminals().size() > 0)
+            return getTerminals().get(0);
+
+        return null;
+    }
+
     public boolean isInside(int px, int py) {
         if (getOrientation() == Orientation.Horizontal)
             return px >= x && px <= (x+w) && py >= y && py <= (y+h);
         else
             return px >= x && px <= (x+h) && py >= y && py <= (y+w);
     }
+
+    public Terminal getHoveredTerminal() {
+        for (Terminal t: terminals)
+            if (t.isHover())
+                return t;
+
+        return null;
+    }
+
 
     public void setSelected(boolean selected) {
         this.selected = selected;

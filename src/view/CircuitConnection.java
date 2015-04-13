@@ -4,10 +4,10 @@ package view;
  * Created by GR5 on 24.03.15.
  */
 public class CircuitConnection {
-    CircuitComponent src;
-    CircuitComponent dest;
+    Terminal src;
+    Terminal dest;
 
-    public CircuitConnection(CircuitComponent src, CircuitComponent dest) {
+    public CircuitConnection(Terminal src, Terminal dest) {
         this.src = src;
         this.dest = dest;
     }

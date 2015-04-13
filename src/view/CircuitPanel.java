@@ -19,6 +19,8 @@ public class CircuitPanel extends JPanel implements ActionListener {
     java.util.List<CircuitComponent> components = new ArrayList<CircuitComponent>();
     java.util.List<CircuitConnection> connections = new ArrayList<CircuitConnection>();
 
+    CircuitConnection newConnection = null;
+
     public CircuitPanel() {
         buildTestComponents();
         addActions();
@@ -66,6 +68,14 @@ public class CircuitPanel extends JPanel implements ActionListener {
                 oldx = e.getX();
                 oldy = e.getY();
 
+                if (!e.isShiftDown()) {
+                    Terminal t = findHoveredTerminal();
+                    if (t != null) {
+                        CircuitComponent endComponent = new EmptyComponent(e.getX(), e.getY());
+                        newConnection = new CircuitConnection(t, endComponent.getTerminals().get(0));
+                    }
+                }
+
                 for (CircuitComponent cc: components) {
                     if (!e.isShiftDown())
                         cc.setSelected(false);
@@ -80,27 +90,70 @@ public class CircuitPanel extends JPanel implements ActionListener {
             }
 
             @Override
+            public void mouseReleased(MouseEvent e) {
+                Terminal t = findHoveredTerminal();
+                if (t == null) {
+                    newConnection = null;
+                } else {
+                    newConnection.dest = t;
+                    connections.add(newConnection);
+                    newConnection = null;
+                }
+
+                repaint();
+
+                super.mouseReleased(e);
+            }
+
+            @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
 
-                int dx = e.getX() - oldx;
-                int dy = e.getY() - oldy;
+                if (newConnection != null) {
+                    CircuitComponent c = findComponent(e.getX(), e.getY());
+                    clearTerminalsHover();
+                    if (c == null) {
+                        Terminal t = findTerminal(e.getX(), e.getY());
 
-                for (CircuitComponent cc: components) {
-                    if (cc.isSelected()) {
-                        cc.x += dx;
-                        cc.y += dy;
+                        if (t != null) {
+                            t.setHover(true);
+                        }
                     }
+
+                    newConnection.dest.getParent().x = e.getX();
+                    newConnection.dest.getParent().y = e.getY();
+                } else {
+
+                    int dx = e.getX() - oldx;
+                    int dy = e.getY() - oldy;
+
+                    for (CircuitComponent cc : components) {
+                        if (cc.isSelected()) {
+                            cc.x += dx;
+                            cc.y += dy;
+                        }
+                    }
+
+                    oldx = e.getX();
+                    oldy = e.getY();
                 }
 
-                oldx = e.getX();
-                oldy = e.getY();
+
 
                 repaint();
             }
         };
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
+    }
+
+    private Terminal findHoveredTerminal() {
+        for (CircuitComponent c: components) {
+            Terminal t = c.getHoveredTerminal();
+            if (t != null)
+                return t;
+        }
+        return null;
     }
 
     private Terminal findTerminal(int x, int y) {
@@ -132,10 +185,10 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
     private void buildTestComponents() {
         CircuitComponent c1, c2, c3, c4, c5, c6, c7;
-        components.add(c1 = new CircuitComponent(20, 20, 30, 40));
-        components.add(c2 = new CircuitComponent(100,20,60,40));
-        components.add(c3 = new CircuitComponent(20, 80, 10, 40));
-        components.add(c4 = new CircuitComponent(200, 140, 50, 40));
+        components.add(c1 = new EmptyComponent(20, 20));
+        components.add(c2 = new EmptyComponent(100,20));
+        components.add(c3 = new EmptyComponent(20, 80));
+        components.add(c4 = new EmptyComponent(200, 140));
         c4.name = "Prostokącik";
         components.add(c5 = new ResistorView(150, 200));
         components.add(c6 = new ResistorView(10, 250));
@@ -146,10 +199,10 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
         components.add(c7 = new CapacitorView(30, 300));
 
-        connections.add(new CircuitConnection(c1, c2));
-        connections.add(new CircuitConnection(c3, c2));
-        connections.add(new CircuitConnection(c3, c4));
-        connections.add(new CircuitConnection(c1, c4));
+        connections.add(new CircuitConnection(c1.getFirstTerminal(), c2.getFirstTerminal()));
+        connections.add(new CircuitConnection(c3.getFirstTerminal(), c2.getFirstTerminal()));
+        connections.add(new CircuitConnection(c3.getFirstTerminal(), c4.getFirstTerminal()));
+        connections.add(new CircuitConnection(c1.getFirstTerminal(), c4.getFirstTerminal()));
     }
 
     @Override
@@ -165,9 +218,16 @@ public class CircuitPanel extends JPanel implements ActionListener {
         graphics.setColor(Color.BLUE);
         for (CircuitConnection con: connections) {
             graphics.drawLine(
-                    con.src.getMidX(), con.src.getMidY(),
-                    con.dest.getMidX(), con.dest.getMidY()
+                    con.src.getX(), con.src.getY(),
+                    con.dest.getX(), con.dest.getY()
                     );
+        }
+
+        if (newConnection != null) {
+            graphics.drawLine(
+                    newConnection.src.getX(), newConnection.src.getY(),
+                    newConnection.dest.getX(), newConnection.dest.getY()
+            );
         }
     }
 
