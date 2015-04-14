@@ -5,11 +5,9 @@ import gui.Main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by GR5 on 24.03.15.
@@ -18,6 +16,7 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
     java.util.List<CircuitComponent> components = new ArrayList<CircuitComponent>();
     java.util.List<CircuitConnection> connections = new ArrayList<CircuitConnection>();
+    private CircuitConnection temporaryConnection = null;
 
     public CircuitPanel() {
         buildTestComponents();
@@ -46,17 +45,27 @@ public class CircuitPanel extends JPanel implements ActionListener {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                oldx = e.getX();
-                oldy = e.getY();
 
-                for (CircuitComponent cc: components) {
-                    if (!e.isShiftDown())
-                        cc.setSelected(false);
-                    if (cc.isInside(e.getX(), e.getY()))
-                        if (e.isShiftDown())
-                            cc.setSelected(!cc.isSelected());
-                        else
-                            cc.setSelected(true);
+                requestFocusInWindow();
+
+                TerminalView t = findTerminal(e.getX(), e.getY());
+                if (t != null) {
+                    EmptyComponent ec = new EmptyComponent(e.getX(), e.getY());
+                    TerminalView temporaryTerminal = ec.getTerminals().get(0);
+                    temporaryConnection = new CircuitConnection(t, temporaryTerminal);
+                } else {
+                    oldx = e.getX();
+                    oldy = e.getY();
+
+                    for (CircuitComponent cc : components) {
+                        if (!e.isShiftDown())
+                            cc.setSelected(false);
+                        if (cc.isInside(e.getX(), e.getY()))
+                            if (e.isShiftDown())
+                                cc.setSelected(!cc.isSelected());
+                            else
+                                cc.setSelected(true);
+                    }
                 }
 
                 repaint();
@@ -66,18 +75,27 @@ public class CircuitPanel extends JPanel implements ActionListener {
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
 
-                int dx = e.getX() - oldx;
-                int dy = e.getY() - oldy;
+                if (temporaryConnection != null) {
+                    temporaryConnection.dest.parent.x = e.getX();
+                    temporaryConnection.dest.parent.y = e.getY();
 
-                for (CircuitComponent cc: components) {
-                    if (cc.isSelected()) {
-                        cc.x += dx;
-                        cc.y += dy;
+                    TerminalView t = findTerminalAndClearHover(e.getX(), e.getY());
+                    if (t != null)
+                        t.setHovered(true);
+                } else {
+                    int dx = e.getX() - oldx;
+                    int dy = e.getY() - oldy;
+
+                    for (CircuitComponent cc : components) {
+                        if (cc.isSelected()) {
+                            cc.x += dx;
+                            cc.y += dy;
+                        }
                     }
-                }
 
-                oldx = e.getX();
-                oldy = e.getY();
+                    oldx = e.getX();
+                    oldy = e.getY();
+                }
 
                 repaint();
             }
@@ -90,9 +108,55 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
                 repaint();
             }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (temporaryConnection != null) {
+                    TerminalView t = findTerminal(e.getX(), e.getY());
+                    if (t != null) {
+                        temporaryConnection.dest = t;
+                        connections.add(temporaryConnection);
+                    }
+
+                    temporaryConnection = null;
+                }
+            }
         };
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                System.out.println("jakis klawisz: " + keyEvent.getKeyChar());
+
+                if (keyEvent.getKeyChar() == KeyEvent.VK_DELETE) {
+                    Iterator<CircuitComponent> it = components.iterator();
+                    while (it.hasNext()) {
+                        CircuitComponent cc = it.next();
+                        if (cc.isSelected()) {
+                            connections.removeAll(findConnections(cc));
+                            it.remove();;
+                        }
+                    }
+                }
+
+                repaint();
+            }
+
+            @Override public void keyTyped(KeyEvent keyEvent) { }
+            @Override public void keyReleased(KeyEvent keyEvent) {}
+        });
+
+        setFocusable(true);
+    }
+
+    private Collection<CircuitConnection> findConnections(CircuitComponent cc) {
+        List<CircuitConnection> res = new LinkedList<CircuitConnection>();
+        for (CircuitConnection con: connections) {
+            if (con.src.parent == cc || con.dest.parent == cc)
+                res.add(con);
+        }
+        return res;
     }
 
     private TerminalView findTerminalAndClearHover(int x, int y) {
@@ -161,6 +225,12 @@ public class CircuitPanel extends JPanel implements ActionListener {
         graphics.setColor(Color.BLUE);
         for (CircuitConnection con: connections) {
             con.paintConnection(graphics);
+        }
+
+        if (temporaryConnection != null) {
+            graphics.setColor(Color.BLUE);
+            temporaryConnection.paintConnection(graphics);
+            graphics.setColor(Color.BLACK);
         }
     }
 
