@@ -27,8 +27,8 @@ public class CapacitorView extends CircuitComponent {
 
             g.drawLine(x + w - d, by, x + w, by);
 
-            g.drawArc(x - hr, by - hr/2, hr, hr, 0, 360);
-            g.drawArc(x + w, by - hr/2, hr, hr, 0, 360);
+            //g.drawArc(x - hr, by - hr/2, hr, hr, 0, 360);
+            //g.drawArc(x + w, by - hr/2, hr, hr, 0, 360);
 
             if (name != null && name.length() > 0)
                 g.drawString(name, x + 2, y - 2);
@@ -43,8 +43,8 @@ public class CapacitorView extends CircuitComponent {
 
             g.drawLine(bx, y + w - d, bx, y + w);
 
-            g.drawArc(bx - hr/2, y - hr,  hr, hr, 0, 360);
-            g.drawArc(bx - hr/2, y+w ,  hr, hr, 0, 360);
+            //g.drawArc(bx - hr/2, y - hr,  hr, hr, 0, 360);
+            //g.drawArc(bx - hr/2, y+w ,  hr, hr, 0, 360);
 
             if (name != null && name.length() > 0)
                 g.drawString(name, x + h + 2, y + w/2 + g.getFontMetrics().getHeight() / 2);

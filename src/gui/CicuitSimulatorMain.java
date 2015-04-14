@@ -1,9 +1,6 @@
 package gui;
 
-import view.CapacitorView;
-import view.CircuitPanel;
-import view.CoilView;
-import view.ResistorView;
+import view.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -47,6 +44,18 @@ public class CicuitSimulatorMain implements ActionListener {
         btnCoil.setText("Cewka");
         btnCoil.addActionListener(this);
         toolbar.add(btnCoil);
+
+        JButton btnVoltageSource = new JButton();
+        btnVoltageSource.setActionCommand("addVoltage");
+        btnVoltageSource.setText("Źródło napięciowe");
+        btnVoltageSource.addActionListener(this);
+        toolbar.add(btnVoltageSource);
+
+        JButton btnCurrentSource = new JButton();
+        btnCurrentSource.setActionCommand("addCurrent");
+        btnCurrentSource.setText("Źródło prądowe");
+        btnCurrentSource.addActionListener(this);
+        toolbar.add(btnCurrentSource);
     }
 
     public JPanel getRootPanel() {
@@ -67,6 +76,12 @@ public class CicuitSimulatorMain implements ActionListener {
                 circuitPanel.addCircuitComponent(cv);
         } else if (actionEvent.getActionCommand().equals("addCoil")) {
             CoilView c = new CoilView(getRootPanel().getWidth() / 2, getRootPanel().getHeight() / 2);
+            circuitPanel.addCircuitComponent(c);
+        } else if (actionEvent.getActionCommand().equals("addVoltage")) {
+            VoltageSourceView c = new VoltageSourceView(getRootPanel().getWidth() / 2, getRootPanel().getHeight() / 2);
+            circuitPanel.addCircuitComponent(c);
+        } else if (actionEvent.getActionCommand().equals("addCurrent")) {
+            CurrentSourceView c = new CurrentSourceView(getRootPanel().getWidth() / 2, getRootPanel().getHeight() / 2);
             circuitPanel.addCircuitComponent(c);
         } else if (actionEvent.getActionCommand().equals("repaint")) {
             circuitPanel.repaint();

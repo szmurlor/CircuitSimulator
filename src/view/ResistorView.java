@@ -8,6 +8,10 @@ import java.awt.*;
 public class ResistorView extends CircuitComponent {
     public ResistorView(int x, int y) {
         super(x, y, 40, 10);
+
+        int r = CircuitSimulator.TERMINAL_R;
+        getTerminals().add( new TerminalView(this, -2*r, h/2-r));
+        getTerminals().add( new TerminalView(this, w, h/2-r));
     }
 
     @Override
@@ -33,8 +37,8 @@ public class ResistorView extends CircuitComponent {
 
             g.drawLine(x + w - d, by, x + w, by);
 
-            g.drawArc(x - 2 * hr, by - hr, 2 * hr, 2 * hr, 0, 360);
-            g.drawArc(x + w, by - hr, 2 * hr, 2 * hr, 0, 360);
+            //g.drawArc(x - 2 * hr, by - hr, 2 * hr, 2 * hr, 0, 360);
+            //g.drawArc(x + w, by - hr, 2 * hr, 2 * hr, 0, 360);
 
             if (name != null && name.length() > 0)
                 g.drawString(name, x + 2, y - 2);
@@ -54,13 +58,16 @@ public class ResistorView extends CircuitComponent {
 
             g.drawLine(bx, y + w - d, bx, y + w);
 
-            g.drawArc(bx - hr, y - 2*hr, 2 * hr, 2 * hr, 0, 360);
-            g.drawArc(bx - hr, y+w, 2 * hr, 2 * hr, 0, 360);
+
+            //g.drawArc(bx - hr, y - 2*hr, 2 * hr, 2 * hr, 0, 360);
+            //g.drawArc(bx - hr, y+w, 2 * hr, 2 * hr, 0, 360);
 
             if (name != null && name.length() > 0)
                 g.drawString(name, x + h + 2, y + w/2 + g.getFontMetrics().getHeight() / 2);
 
         }
 
+
+        super.paintComponent(g);
     }
 }

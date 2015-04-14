@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by GR5 on 24.03.15.
@@ -13,6 +15,8 @@ public class CircuitComponent {
 
     private Orientation orientation = Orientation.Horizontal;
     private boolean selected;
+
+    private java.util.List<TerminalView> terminals = new LinkedList<TerminalView>();
 
     public CircuitComponent(int x, int y, int w, int h) {
         this.x = x;
@@ -45,11 +49,15 @@ public class CircuitComponent {
     }
 
     public void paintComponent(Graphics graphics) {
-        setColorIfSelected(graphics);
-        graphics.drawRect(x, y, w, h);
+        // setColorIfSelected(graphics);
+        // graphics.drawRect(x, y, w, h);
 
-        if (name != null && name.length() > 0)
-            graphics.drawString(name, x + 2, y - 2);
+        // if (name != null && name.length() > 0)
+        //    graphics.drawString(name, x + 2, y - 2);
+
+        for (TerminalView t: getTerminals()) {
+            t.paint(graphics);
+        }
     }
 
     protected void setColorIfSelected(Graphics graphics) {
@@ -65,5 +73,13 @@ public class CircuitComponent {
 
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
+    }
+
+    public List<TerminalView> getTerminals() {
+        return terminals;
+    }
+
+    public void setTerminals(List<TerminalView> terminals) {
+        this.terminals = terminals;
     }
 }
