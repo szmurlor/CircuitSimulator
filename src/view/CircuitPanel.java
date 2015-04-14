@@ -48,6 +48,9 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
                 requestFocusInWindow();
                 clearConnectionsSelected();
+                if (!e.isShiftDown())
+                    for (CircuitComponent cc : components)
+                        cc.setSelected(false);
 
                 TerminalView t = findTerminal(e.getX(), e.getY());
                 if (t != null) {
@@ -63,8 +66,6 @@ public class CircuitPanel extends JPanel implements ActionListener {
                         oldy = e.getY();
 
                         for (CircuitComponent cc : components) {
-                            if (!e.isShiftDown())
-                                cc.setSelected(false);
                             if (cc.isInside(e.getX(), e.getY()))
                                 if (e.isShiftDown())
                                     cc.setSelected(!cc.isSelected());
@@ -142,6 +143,14 @@ public class CircuitPanel extends JPanel implements ActionListener {
                         if (cc.isSelected()) {
                             connections.removeAll(findConnections(cc));
                             it.remove();;
+                        }
+                    }
+
+                    Iterator<CircuitConnection> itc = connections.iterator();
+                    while (itc.hasNext()) {
+                        CircuitConnection cc = itc.next();
+                        if (cc.isSelected()) {
+                            itc.remove();;
                         }
                     }
                 }

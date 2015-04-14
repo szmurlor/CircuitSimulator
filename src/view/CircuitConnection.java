@@ -11,12 +11,13 @@ public class CircuitConnection {
     private boolean selected;
 
     public boolean isInside(int x, int y) {
+        int r = CircuitSimulator.TERMINAL_R;
         double x0 = x;
         double y0 = y;
-        double x1 = src.getX();
-        double y1 = src.getY();
-        double x2 = dest.getX();
-        double y2 = dest.getY();
+        double x1 = src.getX()+r;
+        double y1 = src.getY()+r;
+        double x2 = dest.getX()+r;
+        double y2 = dest.getY()+r;
         double d = Math.abs( (y2-y1)*x0-(x2-x1)*y0 + x2*y1 - y2*x1 ) / Math.sqrt((y2-y1)*(y2-y1) + (x2-x1)*(x2-x1));
 
         return d < CircuitSimulator.CONNECTION_DISTANCE;
