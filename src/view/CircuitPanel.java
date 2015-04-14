@@ -130,10 +130,10 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
     private void buildTestComponents() {
         CircuitComponent c1, c2, c3, c4, c5, c6;
-        components.add(c1 = new CircuitComponent(20, 20, 30, 40));
-        components.add(c2 = new CircuitComponent(100,20,60,40));
-        components.add(c3 = new CircuitComponent(20, 80, 10, 40));
-        components.add(c4 = new CircuitComponent(200, 140, 50, 40));
+        components.add(c1 = new EmptyComponent(20, 20));
+        components.add(c2 = new EmptyComponent(100,20));
+        components.add(c3 = new EmptyComponent(20, 80));
+        components.add(c4 = new EmptyComponent(200, 140));
         c4.name = "Prostokącik";
         components.add(c5 = new ResistorView(150, 200));
         components.add(c6 = new ResistorView(10, 250));
@@ -142,10 +142,10 @@ public class CircuitPanel extends JPanel implements ActionListener {
         c5.name = "R5";
         c6.name = "R6";
 
-        connections.add(new CircuitConnection(c1, c2));
-        connections.add(new CircuitConnection(c3, c2));
-        connections.add(new CircuitConnection(c3, c4));
-        connections.add(new CircuitConnection(c1, c4));
+        connections.add(new CircuitConnection(c1.getTerminals().get(0), c2.getTerminals().get(0)));
+        connections.add(new CircuitConnection(c3.getTerminals().get(0), c2.getTerminals().get(0)));
+        connections.add(new CircuitConnection(c3.getTerminals().get(0), c4.getTerminals().get(0)));
+        connections.add(new CircuitConnection(c1.getTerminals().get(0), c4.getTerminals().get(0)));
     }
 
     @Override
@@ -160,10 +160,7 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
         graphics.setColor(Color.BLUE);
         for (CircuitConnection con: connections) {
-            graphics.drawLine(
-                    con.src.getMidX(), con.src.getMidY(),
-                    con.dest.getMidX(), con.dest.getMidY()
-                    );
+            con.paintConnection(graphics);
         }
     }
 

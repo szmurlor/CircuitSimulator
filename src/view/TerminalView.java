@@ -24,6 +24,8 @@ public class TerminalView {
         if (hovered) {
             g.setColor(Color.BLUE);
             g2d.setStroke(new BasicStroke(2));
+        } else if (parent.isSelected()) {
+            g.setColor(Color.RED);
         } else {
             g.setColor(Color.BLACK);
         }
@@ -35,14 +37,14 @@ public class TerminalView {
         g2d.setStroke(currentStroke);
     }
 
-    private int getY() {
+    public int getY() {
         if (parent.getOrientation() == CircuitComponent.Orientation.Horizontal)
             return parent.y + dy;
         else
             return parent.y + dx;
     }
 
-    private int getX() {
+    public int getX() {
         if (parent.getOrientation() == CircuitComponent.Orientation.Horizontal)
             return parent.x + dx;
         else

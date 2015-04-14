@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by GR5 on 24.03.15.
  */
-public class CircuitComponent {
+public abstract class CircuitComponent {
     public enum Orientation {Horizontal, Vertical}
 
     public int x,y,w,h;
