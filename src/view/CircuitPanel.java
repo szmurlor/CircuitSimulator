@@ -81,9 +81,42 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
                 repaint();
             }
+
+            @Override
+            public void mouseMoved(MouseEvent mouseEvent) {
+                TerminalView t = findTerminalAndClearHover(mouseEvent.getX(), mouseEvent.getY());
+                if (t != null)
+                    t.setHovered(true);
+
+                repaint();
+            }
         };
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
+    }
+
+    private TerminalView findTerminalAndClearHover(int x, int y) {
+        return _findTerminal(x, y, true);
+    }
+
+    private TerminalView findTerminal(int x, int y) {
+        return _findTerminal(x,y, false);
+    }
+
+    private TerminalView _findTerminal(int x, int y, boolean clearHover) {
+        TerminalView t = null;
+
+        for (CircuitComponent c: components) {
+            for (TerminalView tv :c.getTerminals()) {
+                if (clearHover)
+                    tv.setHovered(false);
+                if (tv.isInside(x,y)) {
+                    t = tv;
+                }
+            }
+        }
+
+        return t;
     }
 
     private CircuitComponent findComponent(int x, int y) {
