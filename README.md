@@ -45,4 +45,11 @@ Opis kolejnych etapów:
     * Dokończenie toolbara - wszystkie komponenty (kondensator, cewka, źródło prądowe, źródło napięciowe)
     * Podpięcie obrazków pod komponenty toolbara
     * Poprawienie okna dialogowego i dorobienie w nim wartości elektrycznej.
+    * Przerobienie CircuitConnection aby nie łączył Componentów tylko Terminale
+    * Dodawanie połączenia - jeżeli podczas onHover na Terminalu wciśnięty zostanie przycisk OnPress to zostaje dodany tymczasowy obiekt połączenia, który ma podpięty oryginalny jeden Terminal i docelowy terminal tymczasowy utworzony w pustym komponencie (pusty komponent potrzebny ponieważ Terminal określa swoje współrzędne gemoteryczne względem komponentu rodzica.
+    * Utworzenie połączenie po mouseRelease jeżeli jakiś inny terminal był Hovered.
+    * Zaznaczanie połączeń (równanie prostej i odległość punktu od prostej).
+    * Rysowanie zakończeń połączenia w postaci kwadratów.
+    * Dodanie trybów interakcji myszki. (Stany interakcji)
+    * Dodanie usuwania.
 4. 
