@@ -10,6 +10,10 @@ import javafx.geometry.Orientation;
 public class CoilView extends CircuitComponent {
     public CoilView(int x, int y){
         super(x, y, 40, 10);
+
+        int r = CircuitSimulator.TERMINAL_R;
+        getTerminals().add( new TerminalView(this, -2*r, h/2-r) );
+        getTerminals().add( new TerminalView(this, w, h/2-r) );
     }
 
 
@@ -55,6 +59,7 @@ public class CoilView extends CircuitComponent {
 
         }
 
+        super.paintComponent(g);
     }
 }
 

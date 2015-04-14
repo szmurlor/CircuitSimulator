@@ -8,7 +8,12 @@ import java.awt.*;
 
 public class CapacitorView extends CircuitComponent {
     public CapacitorView(int x, int y) {
+
         super(x, y, 16, 10);
+
+        int r = CircuitSimulator.TERMINAL_R;
+        getTerminals().add( new TerminalView(this, -2*r, h/2-r) );
+        getTerminals().add( new TerminalView(this, w, h/2-r) );
     }
 
     @Override
@@ -51,6 +56,7 @@ public class CapacitorView extends CircuitComponent {
 
         }
 
+        super.paintComponent(g);
     }
 }
 
