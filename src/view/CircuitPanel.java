@@ -1,20 +1,18 @@
 package view;
 
+import gui.CicuitSimulatorMain;
 import gui.ElectricalComponentDialog;
 import gui.Main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.*;
 
 /**
  * Created by GR5 on 24.03.15.
  */
-public class CircuitPanel extends JPanel implements ActionListener {
+public class CircuitPanel extends JPanel implements ActionListener, KeyListener {
 
     java.util.List<CircuitComponent> components = new ArrayList<CircuitComponent>();
     java.util.List<CircuitConnection> connections = new ArrayList<CircuitConnection>();
@@ -27,6 +25,9 @@ public class CircuitPanel extends JPanel implements ActionListener {
     }
 
     private void addActions() {
+        setFocusable(true);
+        requestFocusInWindow();
+        addKeyListener(this);
         MouseAdapter mouseAdapter = new MouseAdapter() {
 
             int oldx, oldy;
@@ -87,6 +88,8 @@ public class CircuitPanel extends JPanel implements ActionListener {
                 }
 
                 repaint();
+
+                requestFocusInWindow();
             }
 
             @Override
@@ -241,5 +244,32 @@ public class CircuitPanel extends JPanel implements ActionListener {
         if (actionEvent.getActionCommand().equals("repaint")) {
             repaint();
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println("Akuku");
+        if (e.getKeyChar() == KeyEvent.VK_DELETE) {
+            Iterator<CircuitComponent> it = components.iterator();
+            while (it.hasNext()) {
+                CircuitComponent cc = it.next();
+                if (cc.isSelected()) {
+                    it.remove();
+                }
+            }
+        }
+
+        repaint();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("Akuku");
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println("Akuku");
+
     }
 }
