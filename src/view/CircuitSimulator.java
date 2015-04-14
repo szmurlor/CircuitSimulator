@@ -5,4 +5,5 @@ package view;
  */
 public class CircuitSimulator {
     public static final int TERMINAL_R = 3;
+    public static final double CONNECTION_DISTANCE = 3;
 }

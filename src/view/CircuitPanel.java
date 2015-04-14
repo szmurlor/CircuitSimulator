@@ -47,6 +47,7 @@ public class CircuitPanel extends JPanel implements ActionListener {
                 super.mousePressed(e);
 
                 requestFocusInWindow();
+                clearConnectionsSelected();
 
                 TerminalView t = findTerminal(e.getX(), e.getY());
                 if (t != null) {
@@ -54,17 +55,22 @@ public class CircuitPanel extends JPanel implements ActionListener {
                     TerminalView temporaryTerminal = ec.getTerminals().get(0);
                     temporaryConnection = new CircuitConnection(t, temporaryTerminal);
                 } else {
-                    oldx = e.getX();
-                    oldy = e.getY();
+                    CircuitConnection con = findConnection(e.getX(), e.getY());
+                    if (con != null ){
+                        con.setSelected(true);
+                    } else {
+                        oldx = e.getX();
+                        oldy = e.getY();
 
-                    for (CircuitComponent cc : components) {
-                        if (!e.isShiftDown())
-                            cc.setSelected(false);
-                        if (cc.isInside(e.getX(), e.getY()))
-                            if (e.isShiftDown())
-                                cc.setSelected(!cc.isSelected());
-                            else
-                                cc.setSelected(true);
+                        for (CircuitComponent cc : components) {
+                            if (!e.isShiftDown())
+                                cc.setSelected(false);
+                            if (cc.isInside(e.getX(), e.getY()))
+                                if (e.isShiftDown())
+                                    cc.setSelected(!cc.isSelected());
+                                else
+                                    cc.setSelected(true);
+                        }
                     }
                 }
 
@@ -150,6 +156,20 @@ public class CircuitPanel extends JPanel implements ActionListener {
         setFocusable(true);
     }
 
+    private void clearConnectionsSelected() {
+        for (CircuitConnection c: connections) {
+            c.setSelected(false);
+        }
+    }
+
+    private CircuitConnection findConnection(int x, int y) {
+        for (CircuitConnection c: connections) {
+            if (c.isInside(x,y))
+                return c;
+        }
+        return null;
+    }
+
     private Collection<CircuitConnection> findConnections(CircuitComponent cc) {
         List<CircuitConnection> res = new LinkedList<CircuitConnection>();
         for (CircuitConnection con: connections) {
@@ -224,6 +244,10 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
         graphics.setColor(Color.BLUE);
         for (CircuitConnection con: connections) {
+            if (con.isSelected())
+                graphics.setColor(Color.RED);
+            else
+                graphics.setColor(Color.BLACK);
             con.paintConnection(graphics);
         }
 
