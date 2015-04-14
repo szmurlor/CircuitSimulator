@@ -134,8 +134,8 @@ public class CircuitPanel extends JPanel implements ActionListener {
         }
     }
 
-    public void addCircuitComponent(ResistorView rv) {
-        components.add(rv);
+    public void addCircuitComponent(CircuitComponent comp) {
+        components.add(comp);
         repaint();
     }
 
