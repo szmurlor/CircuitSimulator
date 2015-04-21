@@ -20,9 +20,11 @@ public class Main {
             e.printStackTrace();
         }
         */
-
+        UIManager.put("swing.boldMetal", Boolean.FALSE);
         JFrame frame = new JFrame("Circuits Simulator " + VERSION);
-        frame.setContentPane(new CicuitSimulatorMain().getRootPanel());
+        CicuitSimulatorMain csMain = new CicuitSimulatorMain();
+        frame.setJMenuBar(csMain.setupMenu());
+        frame.setContentPane(csMain.getRootPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

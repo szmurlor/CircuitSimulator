@@ -16,14 +16,41 @@ public class CicuitSimulatorMain implements ActionListener {
     private JToolBar toolbar;
 
     public CicuitSimulatorMain() {
-        zamknijButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.exit(0);
-            }
-        });
+        zamknijButton.setActionCommand("exit");
+        zamknijButton.addActionListener(this);
 
         setupToolbar();
+        setupMenu();
+    }
+
+    public JMenuBar setupMenu() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menu = new JMenu("Plik");
+        JMenuItem menuItem = new JMenuItem("Otwórz");
+        menuItem.setActionCommand("open");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Zapisz");
+        menuItem.setActionCommand("save");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Zapisz jako");
+        menuItem.setActionCommand("saveAs");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+
+        menu.addSeparator();
+
+        menuItem = new JMenuItem("Zakończ");
+        menuItem.setActionCommand("exit");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+
+        menuBar.add(menu);
+        return menuBar;
     }
 
     private void setupToolbar() {
@@ -85,6 +112,8 @@ public class CicuitSimulatorMain implements ActionListener {
             circuitPanel.addCircuitComponent(c);
         } else if (actionEvent.getActionCommand().equals("repaint")) {
             circuitPanel.repaint();
+        } else if (actionEvent.getActionCommand().equals("exit")) {
+            System.exit(0);
         }
     }
 }

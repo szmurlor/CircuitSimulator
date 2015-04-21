@@ -17,6 +17,16 @@ public class CapacitorView extends CircuitComponent {
     }
 
     @Override
+    public String getElectricalValueLabel() {
+        return "Pojemność:";
+    }
+
+    @Override
+    public String getElectricalValueUnit() {
+        return "[\u03BCF]";
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
 

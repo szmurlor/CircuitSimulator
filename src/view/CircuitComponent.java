@@ -8,6 +8,7 @@ import java.util.List;
  * Created by GR5 on 24.03.15.
  */
 public abstract class CircuitComponent {
+
     public enum Orientation {Horizontal, Vertical}
 
     public int x,y,w,h;
@@ -16,7 +17,17 @@ public abstract class CircuitComponent {
     private Orientation orientation = Orientation.Horizontal;
     private boolean selected;
 
+    protected double electricalValue;
+
     private java.util.List<TerminalView> terminals = new LinkedList<TerminalView>();
+
+
+    public abstract String getElectricalValueLabel();
+    public abstract String getElectricalValueUnit();
+    public String getDoc() {
+        return null;
+    }
+
 
     public CircuitComponent(int x, int y, int w, int h) {
         this.x = x;
@@ -81,5 +92,13 @@ public abstract class CircuitComponent {
 
     public void setTerminals(List<TerminalView> terminals) {
         this.terminals = terminals;
+    }
+
+    public double getElectricalValue() {
+        return electricalValue;
+    }
+
+    public void setElectricalValue(double electricalValue) {
+        this.electricalValue = electricalValue;
     }
 }

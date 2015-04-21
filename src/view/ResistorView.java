@@ -15,6 +15,16 @@ public class ResistorView extends CircuitComponent {
     }
 
     @Override
+    public String getElectricalValueLabel() {
+        return "Rezystancja:";
+    }
+
+    @Override
+    public String getElectricalValueUnit() {
+        return "[\u2126]";
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
 

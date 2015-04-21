@@ -12,6 +12,16 @@ public class CurrentSourceView extends CircuitComponent {
         getTerminals().add( new TerminalView(this, w, h/2-r) );
     }
 
+    @Override
+    public String getElectricalValueLabel() {
+        return "Prąd:";
+    }
+
+    @Override
+    public String getElectricalValueUnit() {
+        return "[A]";
+    }
+
 
     @Override
     public void paintComponent(Graphics g) {

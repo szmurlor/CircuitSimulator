@@ -14,6 +14,21 @@ public class VoltageSourceView extends CircuitComponent {
 
 
     @Override
+    public String getDoc() {
+        return "<html>\n<b>Uwaga!</b> w chwili obecnej wspierane tylko i wyłącznie napięcie<br/> stałe.";
+    }
+
+    @Override
+    public String getElectricalValueLabel() {
+        return "Napięcie:";
+    }
+
+    @Override
+    public String getElectricalValueUnit() {
+        return "[V]";
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
 

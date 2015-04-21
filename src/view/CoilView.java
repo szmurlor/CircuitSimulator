@@ -18,6 +18,16 @@ public class CoilView extends CircuitComponent {
 
 
     @Override
+    public String getElectricalValueLabel() {
+        return "Indukcyjność:";
+    }
+
+    @Override
+    public String getElectricalValueUnit() {
+        return "[L]";
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
 
