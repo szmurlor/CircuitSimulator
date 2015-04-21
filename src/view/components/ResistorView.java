@@ -19,6 +19,11 @@ public class ResistorView extends CircuitComponent {
     }
 
     @Override
+    public String getTypeCode() {
+        return "R";
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
 

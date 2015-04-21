@@ -12,6 +12,7 @@ public abstract class CircuitComponent {
     private String electricalValueLabel;
     private String electricalValueUnit;
     private double electricalValue;
+    private int idx;
 
     public String getElectricalValueLabel() {
         return electricalValueLabel;
@@ -40,6 +41,20 @@ public abstract class CircuitComponent {
     public String getDoc() {
         return null;
     };
+
+    public void setIdx(int idx) {
+        this.idx = idx;
+    }
+
+    public int getIdx() {
+        return idx;
+    }
+
+    public abstract String getTypeCode();
+
+    public int indexOf(TerminalView src) {
+        return terminals.indexOf(src);
+    }
 
     public enum Orientation {Horizontal, Vertical}
 

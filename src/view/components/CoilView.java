@@ -21,6 +21,11 @@ public class CoilView extends CircuitComponent {
 
 
     @Override
+    public String getTypeCode() {
+        return "L";
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
 

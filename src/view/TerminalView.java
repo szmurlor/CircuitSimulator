@@ -63,4 +63,8 @@ public class TerminalView {
         int d = 2*CircuitSimulator.TERMINAL_R;
         return x >= getX() && x <= (getX() + d) && y >= getY() && y <= (getY()+d);
     }
+
+    public CircuitComponent getParent() {
+        return parent;
+    }
 }

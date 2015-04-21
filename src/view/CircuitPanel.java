@@ -283,4 +283,12 @@ public class CircuitPanel extends JPanel implements ActionListener {
             repaint();
         }
     }
+
+    public Collection<CircuitComponent> getCircuitComponents() {
+        return components;
+    }
+
+    public Collection<CircuitConnection> getCircuitConnnections() {
+        return connections;
+    }
 }

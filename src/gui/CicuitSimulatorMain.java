@@ -2,11 +2,13 @@ package gui;
 
 import view.*;
 import view.components.*;
+import writers.CircuitSimulatorWriter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * Created by GR5 on 24.03.15.
@@ -92,6 +94,13 @@ public class CicuitSimulatorMain implements ActionListener {
             int ret = jfChooser.showSaveDialog(rootPanel);
             if (ret == JFileChooser.APPROVE_OPTION) {
                 // System.out.println(jfChooser.getSelectedFile().getAbsoluteFile());
+                CircuitSimulatorWriter csw = new CircuitSimulatorWriter();
+                try {
+                    csw.write(jfChooser.getSelectedFile(), circuitPanel.getCircuitComponents(), circuitPanel.getCircuitConnnections());
+                } catch (IOException e) {
+                    int mc = JOptionPane.ERROR_MESSAGE;
+                    JOptionPane.showMessageDialog (null, "Podczas zapisu wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
+                }
             }
 
         }

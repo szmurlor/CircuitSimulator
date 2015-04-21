@@ -14,4 +14,9 @@ public class EmptyComponent extends CircuitComponent {
 
         getTerminals().add(new TerminalView(this,0,0));
     }
+
+    @Override
+    public String getTypeCode() {
+        return "EMPTY";
+    }
 }

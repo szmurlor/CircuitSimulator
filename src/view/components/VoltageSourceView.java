@@ -16,6 +16,11 @@ public class VoltageSourceView extends CircuitComponent {
     }
 
     @Override
+    public String getTypeCode() {
+        return "VS";
+    }
+
+    @Override
     public String getDoc() {
         return "<html><b>Uwaga!</b> Obecna implemntacja umożliwia definicję wyłącznie źródeł stałych.";
     }

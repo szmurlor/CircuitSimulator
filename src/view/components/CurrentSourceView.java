@@ -15,6 +15,10 @@ public class CurrentSourceView extends CircuitComponent {
         getTerminals().add( new TerminalView(this, w, h/2-r) );
     }
 
+    @Override
+    public String getTypeCode() {
+        return "CS";
+    }
 
     @Override
     public void paintComponent(Graphics g) {

@@ -20,6 +20,11 @@ public class CapacitorView extends CircuitComponent {
     }
 
     @Override
+    public String getTypeCode() {
+        return "C";
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         setColorIfSelected(g);
 

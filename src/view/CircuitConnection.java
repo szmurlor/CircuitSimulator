@@ -6,8 +6,8 @@ import java.awt.*;
  * Created by GR5 on 24.03.15.
  */
 public class CircuitConnection {
-    TerminalView src;
-    TerminalView dest;
+    protected TerminalView src;
+    protected TerminalView dest;
     private boolean selected;
 
     public boolean isInside(int x, int y) {
@@ -42,5 +42,13 @@ public class CircuitConnection {
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public TerminalView getSrc() {
+        return src;
+    }
+
+    public TerminalView getDest() {
+        return dest;
     }
 }
