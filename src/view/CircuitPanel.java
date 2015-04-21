@@ -30,6 +30,9 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+
+                /** Sprawdzam czy podwójne kliknięcie i otwieram ewentualnie okno dialogowe związane
+                 * z komponentem. */
                 if (mouseEvent.getClickCount() % 2 == 0 && !mouseEvent.isConsumed()) {
                     CircuitComponent cc = findComponent(mouseEvent.getX(),mouseEvent.getY());
 

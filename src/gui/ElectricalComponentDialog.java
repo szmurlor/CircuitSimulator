@@ -90,6 +90,12 @@ public class ElectricalComponentDialog extends JDialog {
         dispose();
     }
 
+    /**
+     * Za pomocą tej metody możemy zarejestrować 'obserwatora', czyli komponent
+     * który powinien być powiadamiany o zmianach wymagających jego przerysowania.
+     *
+     * @param al - nazwa action listenera.
+     */
     public void addActionListener(ActionListener al) {
         listeners.add(al);
     }
