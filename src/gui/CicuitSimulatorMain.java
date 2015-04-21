@@ -4,6 +4,7 @@ import view.*;
 import view.components.*;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,12 +18,8 @@ public class CicuitSimulatorMain implements ActionListener {
     private JToolBar toolbar;
 
     public CicuitSimulatorMain() {
-        zamknijButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.exit(0);
-            }
-        });
+        zamknijButton.setActionCommand("exit");
+        zamknijButton.addActionListener(this);
 
         setupToolbar();
     }
@@ -86,6 +83,52 @@ public class CicuitSimulatorMain implements ActionListener {
             circuitPanel.addCircuitComponent(c);
         } else if (actionEvent.getActionCommand().equals("repaint")) {
             circuitPanel.repaint();
+        } else if (actionEvent.getActionCommand().equals("exit")) {
+            System.exit(0);
+        } else if (actionEvent.getActionCommand().equals("saveas")) {
+            JFileChooser jfChooser = new JFileChooser();
+            jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","*.csm"));
+            int ret = jfChooser.showSaveDialog(rootPanel);
+
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                System.out.println(jfChooser.getSelectedFile().getAbsoluteFile());
+            }
+
         }
+    }
+
+    public JMenuBar createMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Plik");
+
+        JMenuItem item = new JMenuItem("Nowy");
+        item.setActionCommand("new");
+        item.addActionListener(this);
+        menu.add(item);
+
+        item = new JMenuItem("Otwórz...");
+        item.setActionCommand("open");
+        item.addActionListener(this);
+        menu.add(item);
+
+        item = new JMenuItem("Zapisz");
+        item.setActionCommand("save");
+        item.addActionListener(this);
+        menu.add(item);
+
+        item = new JMenuItem("Zapisz jako...");
+        item.setActionCommand("saveas");
+        item.addActionListener(this);
+        menu.add(item);
+
+        menu.addSeparator();
+
+        item = new JMenuItem("Zakończ");
+        item.setActionCommand("exit");
+        item.addActionListener(this);
+        menu.add(item);
+
+        menuBar.add(menu);
+        return menuBar;
     }
 }
