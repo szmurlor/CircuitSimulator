@@ -52,4 +52,9 @@ Opis kolejnych etapów:
     * Rysowanie zakończeń połączenia w postaci kwadratów.
     * Dodanie trybów interakcji myszki. (Stany interakcji)
     * Dodanie usuwania.
-4. 
+4. Zajęcia 4
+    * Praca nad oknem dialogowym: dodanie wartości elektrycznej, etykiety, jednostki oraz poprawienie tytułu okna dialogowego (wymaga implementacji metod abstracyjnych getElectricalValue, getEletricalVulueLabel, getDoc, getEletricalValueUnit)
+    * Reorganizacja pakietów (dodanie pakietu components)
+    * Definicja struktury pliku do, której będziemy zapisywać.
+    * Zapisywanie pliku.
+    * Wczytywanie pliku.
