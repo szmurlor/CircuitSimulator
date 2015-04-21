@@ -21,7 +21,7 @@ public class CircuitPanel extends JPanel implements ActionListener {
     private CircuitConnection temporaryConnection = null;
 
     public CircuitPanel() {
-        buildTestComponents();
+        // buildTestComponents();
         addActions();
     }
 

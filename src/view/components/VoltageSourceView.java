@@ -15,6 +15,10 @@ public class VoltageSourceView extends CircuitComponent {
         getTerminals().add(new TerminalView(this, w, h / 2 - r));
     }
 
+    @Override
+    public String getDoc() {
+        return "<html><b>Uwaga!</b> Obecna implemntacja umożliwia definicję wyłącznie źródeł stałych.";
+    }
 
     @Override
     public void paintComponent(Graphics g) {
@@ -26,35 +30,20 @@ public class VoltageSourceView extends CircuitComponent {
 
         if (getOrientation() == Orientation.Horizontal) {
             int by = y + h / 2;
-
             g.drawLine(x, by , x + d, by);
             g.drawArc(x + d, by - rd / 2, rd, rd, 0, 360);
             g.drawLine(x + d + rd, by, x + rd + 2 * d, by);
             g.drawLine(x + d + 4, by, x + d + rd - 4, by);
             g.drawLine(x + d + rd - 4, by, x + rd + d - 8, by - 4);
             g.drawLine(x + d + rd - 4, by, x + rd + d - 8, by + 4);
-
-            //g.drawArc(x - hr, by, hr, hr, 0, 360);
-            //g.drawArc(x + rd + 2 * d, by, hr, hr, 0, 360);
-
-            if (name != null && name.length() > 0)
-            g.drawString(name, x + 2, y + 2);
         } else {
             int bx = x + h /2;
-
             g.drawLine(bx, y, bx, y + d);
             g.drawArc(bx - rd / 2, y + d, rd, rd, 0, 360);
             g.drawLine(bx, y + d + rd, bx, y + rd + 2 * d);
             g.drawLine(bx, y + d + 4, bx, y + d + rd - 4);
             g.drawLine(bx + hr /2, y + d + rd - 4, bx - 4 , y + rd + d - 8);
             g.drawLine(bx , y + d + rd - 4, bx + 4 , y + rd + d - 8);
-
-            //g.drawArc(bx, y - hr, hr, hr, 0, 360);
-            //g.drawArc(bx, y + rd + 2 * d, hr, hr, 0, 360);
-
-            if (name != null && name.length() > 0)
-                g.drawString(name, x + h + 2, y + w/2 + g.getFontMetrics().getHeight() / 2);
-
         }
 
         super.paintComponent(g);

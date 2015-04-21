@@ -37,6 +37,10 @@ public abstract class CircuitComponent {
         this.electricalValue = electricalValue;
     }
 
+    public String getDoc() {
+        return null;
+    };
+
     public enum Orientation {Horizontal, Vertical}
 
     public int x,y,w,h;
@@ -80,11 +84,18 @@ public abstract class CircuitComponent {
     }
 
     public void paintComponent(Graphics graphics) {
-        // setColorIfSelected(graphics);
-        // graphics.drawRect(x, y, w, h);
+        StringBuilder sb = new StringBuilder();
+        sb.append( (name != null && name.length() > 0) ? name : "" );
+        sb.append( sb.length() > 0 ? ": " : "" );
+        sb.append( String.valueOf(getElectricalValue()) );
+        if (getElectricalValueUnit() != null && getElectricalValueUnit().length() > 0)
+            sb.append(" ").append(getElectricalValueUnit());
 
-        // if (name != null && name.length() > 0)
-        //    graphics.drawString(name, x + 2, y - 2);
+        if (getOrientation() == Orientation.Horizontal) {
+            graphics.drawString(sb.toString(), x + 2, y - 2);
+        } else {
+            graphics.drawString(sb.toString(), x + h + 2, y + w/2 + graphics.getFontMetrics().getHeight() / 2);
+        }
 
         for (TerminalView t: getTerminals()) {
             t.paint(graphics);

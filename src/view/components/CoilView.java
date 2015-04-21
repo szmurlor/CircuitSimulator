@@ -36,13 +36,6 @@ public class CoilView extends CircuitComponent {
             g.drawArc(x + d + 2*hr, by - hr, 2*hr, 2*hr, -60, 300);
             g.drawArc(x + d + 3*hr, by - hr, 2*hr, 2*hr, 240, -240);
             g.drawLine(x + w - d, by, x + w, by);
-
-            //g.drawArc(x - hr, by - hr/2, hr, hr, 0, 360);
-            //g.drawArc(x + w, by - hr/2, hr, hr, 0, 360);
-
-            if (name != null && name.length() > 0)
-                g.drawString(name, x + 2, y - 2);
-
         } else {
             int bx = x + h/2;
 
@@ -53,13 +46,6 @@ public class CoilView extends CircuitComponent {
             g.drawArc(bx - hr, y + d + hr, 2 * hr, 2 * hr, -150, 300);
             g.drawArc(bx - hr, y + d + 2*hr, 2 * hr, 2 * hr, -150, 300);
             g.drawArc(bx - hr, y + d + 3*hr, 2 * hr, 2 * hr, -90, 240);
-
-            //g.drawArc(bx - hr/2, y - hr, hr, hr, 0, 360);
-            //g.drawArc(bx - hr/2 , y + w, hr, hr, 0, 360);
-
-            if (name != null && name.length() > 0)
-                g.drawString(name, x + h + 2, y + w/2 + g.getFontMetrics().getHeight() / 2);
-
         }
 
         super.paintComponent(g);

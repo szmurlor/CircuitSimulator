@@ -34,13 +34,6 @@ public class CurrentSourceView extends CircuitComponent {
             g.drawLine(x + d + 4, by, x + d + rd - 4, by);
             g.drawLine(x + d + rd - 4, by, x + rd + d - 8, by - 4);
             g.drawLine(x + d + rd - 4, by, x + rd + d - 8, by + 4);
-
-            if (name != null && name.length() > 0)
-                g.drawString(name, x + 2, y + 2);
-
-            //g.drawArc(x - hr, by, hr, hr, 0, 360);
-            //g.drawArc(x + rd + 2 * d, by, hr, hr, 0, 360);
-
         } else {
             int bx = x + h / 2;
 
@@ -51,13 +44,6 @@ public class CurrentSourceView extends CircuitComponent {
             g.drawLine(bx, y + d + 4, bx, y + d + rd - 4);
             g.drawLine(bx, y + d + rd - 4, bx - 4, y + rd + d - 8);
             g.drawLine(bx, y + d + rd - 4, bx + 4, y + rd + d - 8);
-
-            if (name != null && name.length() > 0)
-                g.drawString(name, x + h + 2, y + w / 2 + g.getFontMetrics().getHeight() / 2);
-
-            // terminale
-            //g.drawArc(bx, y - hr, hr, hr, 0, 360);
-            //g.drawArc(bx, y + rd + 2 * d, hr, hr, 0, 360);
         }
 
         super.paintComponent(g);
