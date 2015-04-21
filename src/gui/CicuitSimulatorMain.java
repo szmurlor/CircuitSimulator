@@ -2,12 +2,14 @@ package gui;
 
 import view.*;
 import view.components.*;
+import writers.CircuitSimulatorReader;
 import writers.CircuitSimulatorWriter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -18,6 +20,8 @@ public class CicuitSimulatorMain implements ActionListener {
     private JButton zamknijButton;
     private CircuitPanel circuitPanel;
     private JToolBar toolbar;
+
+    private File lastFile;
 
     public CicuitSimulatorMain() {
         zamknijButton.setActionCommand("exit");
@@ -87,19 +91,43 @@ public class CicuitSimulatorMain implements ActionListener {
             circuitPanel.repaint();
         } else if (actionEvent.getActionCommand().equals("exit")) {
             System.exit(0);
+        } else if (actionEvent.getActionCommand().equals("new")) {
+            circuitPanel.getCircuitComponents().clear();
+            circuitPanel.getCircuitConnnections().clear();
+            circuitPanel.repaint();
         } else if (actionEvent.getActionCommand().equals("saveas")) {
             JFileChooser jfChooser = new JFileChooser();
             jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","csm"));
+            jfChooser.setCurrentDirectory(lastFile);
 
             int ret = jfChooser.showSaveDialog(rootPanel);
             if (ret == JFileChooser.APPROVE_OPTION) {
-                // System.out.println(jfChooser.getSelectedFile().getAbsoluteFile());
+                lastFile = jfChooser.getSelectedFile();
+
                 CircuitSimulatorWriter csw = new CircuitSimulatorWriter();
                 try {
                     csw.write(jfChooser.getSelectedFile(), circuitPanel.getCircuitComponents(), circuitPanel.getCircuitConnnections());
                 } catch (IOException e) {
                     int mc = JOptionPane.ERROR_MESSAGE;
-                    JOptionPane.showMessageDialog (null, "Podczas zapisu wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
+                    JOptionPane.showMessageDialog(null, "Podczas zapisu wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
+                }
+            }
+
+        } else if (actionEvent.getActionCommand().equals("open")) {
+            JFileChooser jfChooser = new JFileChooser();
+            jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","csm"));
+            jfChooser.setCurrentDirectory(lastFile);
+
+            int ret = jfChooser.showOpenDialog(rootPanel);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                lastFile = jfChooser.getSelectedFile();
+
+                CircuitSimulatorReader csr = new CircuitSimulatorReader();
+                try {
+                    csr.read(jfChooser.getSelectedFile(), circuitPanel.getCircuitComponents(), circuitPanel.getCircuitConnnections());
+                } catch (Exception e) {
+                    int mc = JOptionPane.ERROR_MESSAGE;
+                    JOptionPane.showMessageDialog (null, "Podczas otwierania wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
                 }
             }
 
