@@ -1,15 +1,18 @@
-package view;
+package view.components;
 
 import java.awt.*;
 
 import javafx.geometry.Orientation;
+import view.CircuitComponent;
+import view.CircuitSimulator;
+import view.TerminalView;
 
 /**
  * Created by kurty_000 on 2015-04-07.
  */
 public class CoilView extends CircuitComponent {
     public CoilView(int x, int y){
-        super(x, y, 40, 10);
+        super(x, y, 40, 10, "Indukcyjność: ", "[H]");
 
         int r = CircuitSimulator.TERMINAL_R;
         getTerminals().add( new TerminalView(this, -2*r, h/2-r) );

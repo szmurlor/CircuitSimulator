@@ -1,6 +1,7 @@
 package gui;
 
 import view.*;
+import view.components.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

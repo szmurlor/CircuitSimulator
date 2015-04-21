@@ -1,15 +1,18 @@
 
-package view;
+package view.components;
 
 import java.awt.*;
 
 import javafx.geometry.Orientation;
+import view.CircuitComponent;
+import view.CircuitSimulator;
+import view.TerminalView;
+
 import java.awt.*;
 
 public class CapacitorView extends CircuitComponent {
     public CapacitorView(int x, int y) {
-
-        super(x, y, 16, 10);
+        super(x, y, 16, 10, "Pojemność: ", "[\u03BC]");
 
         int r = CircuitSimulator.TERMINAL_R;
         getTerminals().add( new TerminalView(this, -2*r, h/2-r) );

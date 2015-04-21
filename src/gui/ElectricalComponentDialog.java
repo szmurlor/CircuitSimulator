@@ -15,6 +15,9 @@ public class ElectricalComponentDialog extends JDialog {
     private JTextField txtName;
     private JRadioButton rdHorizontal;
     private JRadioButton rdVertical;
+    private JLabel lblValue;
+    private JTextField txtValue;
+    private JLabel lblUnit;
 
     private CircuitComponent current;
 
@@ -64,6 +67,10 @@ public class ElectricalComponentDialog extends JDialog {
         } else {
             rdVertical.setSelected(true);
         }
+
+        lblValue.setText( current.getElectricalValueLabel() );
+        lblUnit.setText( current.getElectricalValueUnit() );
+        txtValue.setText( String.valueOf(current.getElectricalValue()) );
     }
 
     private void onOK() {
@@ -83,6 +90,8 @@ public class ElectricalComponentDialog extends JDialog {
             current.setOrientation(CircuitComponent.Orientation.Vertical);
         else
             current.setOrientation(CircuitComponent.Orientation.Horizontal);
+
+        current.setElectricalValue( Double.parseDouble( txtValue.getText() ) );
     }
 
     private void onCancel() {

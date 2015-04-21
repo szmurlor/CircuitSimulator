@@ -8,6 +8,35 @@ import java.util.List;
  * Created by GR5 on 24.03.15.
  */
 public abstract class CircuitComponent {
+
+    private String electricalValueLabel;
+    private String electricalValueUnit;
+    private double electricalValue;
+
+    public String getElectricalValueLabel() {
+        return electricalValueLabel;
+    }
+
+    public void setElectricalValueLabel(String electricalValueLabel) {
+        this.electricalValueLabel = electricalValueLabel;
+    }
+
+    public String getElectricalValueUnit() {
+        return electricalValueUnit;
+    }
+
+    public void setElectricalValueUnit(String electricalValueUnit) {
+        this.electricalValueUnit = electricalValueUnit;
+    }
+
+    public double getElectricalValue() {
+        return electricalValue;
+    }
+
+    public void setElectricalValue(double electricalValue) {
+        this.electricalValue = electricalValue;
+    }
+
     public enum Orientation {Horizontal, Vertical}
 
     public int x,y,w,h;
@@ -18,7 +47,9 @@ public abstract class CircuitComponent {
 
     private java.util.List<TerminalView> terminals = new LinkedList<TerminalView>();
 
-    public CircuitComponent(int x, int y, int w, int h) {
+    public CircuitComponent(int x, int y, int w, int h, String electricalValueLabel, String electricalValueUnit) {
+        this.electricalValueLabel = electricalValueLabel;
+        this.electricalValueUnit = electricalValueUnit;
         this.x = x;
         this.y = y;
         this.w = w;

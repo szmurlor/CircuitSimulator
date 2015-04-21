@@ -1,4 +1,8 @@
-package view;
+package view.components;
+
+import view.CircuitComponent;
+import view.CircuitSimulator;
+import view.TerminalView;
 
 import java.awt.*;
 
@@ -7,7 +11,7 @@ import java.awt.*;
  */
 public class ResistorView extends CircuitComponent {
     public ResistorView(int x, int y) {
-        super(x, y, 40, 10);
+        super(x, y, 40, 10, "Rezystancja:", "[\u2126]");
 
         int r = CircuitSimulator.TERMINAL_R;
         getTerminals().add( new TerminalView(this, -2*r, h/2-r));

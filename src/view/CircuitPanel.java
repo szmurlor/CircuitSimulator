@@ -2,6 +2,8 @@ package view;
 
 import gui.ElectricalComponentDialog;
 import gui.Main;
+import view.components.EmptyComponent;
+import view.components.ResistorView;
 
 import javax.swing.*;
 import java.awt.*;
