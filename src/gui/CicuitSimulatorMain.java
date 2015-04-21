@@ -87,11 +87,11 @@ public class CicuitSimulatorMain implements ActionListener {
             System.exit(0);
         } else if (actionEvent.getActionCommand().equals("saveas")) {
             JFileChooser jfChooser = new JFileChooser();
-            jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","*.csm"));
-            int ret = jfChooser.showSaveDialog(rootPanel);
+            jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","csm"));
 
+            int ret = jfChooser.showSaveDialog(rootPanel);
             if (ret == JFileChooser.APPROVE_OPTION) {
-                System.out.println(jfChooser.getSelectedFile().getAbsoluteFile());
+                // System.out.println(jfChooser.getSelectedFile().getAbsoluteFile());
             }
 
         }
