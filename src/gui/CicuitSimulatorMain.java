@@ -9,8 +9,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by GR5 on 24.03.15.
@@ -157,6 +158,24 @@ public class CicuitSimulatorMain implements ActionListener {
             circuitPanel.repaint();
         } else if (actionEvent.getActionCommand().equals("simulate")) {
             circuitPanel.repaint();
+        } else if (actionEvent.getActionCommand().equals("showConsole")) {
+            ProcessBuilder ps = new ProcessBuilder("/bin/bash", "-c", "ngspice -b"); //, "-b", "/home/szmurlor/src/idea/CircuitSimulator/examples/circuit2.cir");
+            // ProcessBuilder ps = new ProcessBuilder("ngspice", "-i");
+            ps.redirectErrorStream(true);
+
+            try {
+                Process pr = ps.start();
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(pr.getOutputStream()));
+                NgSpiceConsole dialogConsole = new NgSpiceConsole(pr, pr.getInputStream());
+                dialogConsole.setTitle("Konsolas NgSpice");
+                dialogConsole.setVisible(true);
+                dialogConsole.pack();
+                circuitPanel.repaint();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -202,8 +221,16 @@ public class CicuitSimulatorMain implements ActionListener {
         menu = new JMenu("Symulacja");
         menuBar.add(menu);
 
-        ButtonGroup group = new ButtonGroup();
+        item = new JMenuItem("Symuluj");
+        item.setActionCommand("simulate");
+        item.addActionListener(this);
+        menu.add(item);
 
+
+        menu.addSeparator();
+
+
+        ButtonGroup group = new ButtonGroup();
         rbItemStatic = new JRadioButtonMenuItem("Symulacja statyczna");
         rbItemStatic.setActionCommand("simulationTypeStatic");
         rbItemStatic.addActionListener(this);
@@ -218,9 +245,12 @@ public class CicuitSimulatorMain implements ActionListener {
         menu.add(rbItemDynamic);
         group.add(rbItemDynamic);
 
+
         menu.addSeparator();
-        item = new JMenuItem("Symuluj");
-        item.setActionCommand("simulate");
+
+
+        item = new JMenuItem("Wyświetl konsolę");
+        item.setActionCommand("showConsole");
         item.addActionListener(this);
         menu.add(item);
 
