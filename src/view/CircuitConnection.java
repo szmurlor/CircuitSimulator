@@ -18,9 +18,16 @@ public class CircuitConnection {
         double y1 = src.getY()+r;
         double x2 = dest.getX()+r;
         double y2 = dest.getY()+r;
-        double d = Math.abs( (y2-y1)*x0-(x2-x1)*y0 + x2*y1 - y2*x1 ) / Math.sqrt((y2-y1)*(y2-y1) + (x2-x1)*(x2-x1));
+        double d = Math.abs( (y2-y1)*x0-(x2-x1)*y0 + x2*y1 - y2*x1 ) / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 
-        return d < CircuitSimulator.CONNECTION_DISTANCE;
+        double minx = Math.min(src.getX(), dest.getX()) - CircuitSimulator.CONNECTION_DISTANCE;
+        double miny = Math.min(src.getY(), dest.getY()) - CircuitSimulator.CONNECTION_DISTANCE;
+        double maxx = Math.max(src.getX(), dest.getX()) + CircuitSimulator.CONNECTION_DISTANCE;
+        double maxy = Math.max(src.getY(), dest.getY()) + CircuitSimulator.CONNECTION_DISTANCE;
+
+        boolean between = (x0 >= minx && x0 <= maxx && y0 >= miny && y0 <= maxy);
+
+        return d <= CircuitSimulator.CONNECTION_DISTANCE && between;
     }
 
     public CircuitConnection(TerminalView src, TerminalView dest) {

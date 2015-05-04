@@ -30,9 +30,8 @@ public class TerminalView {
             g.setColor(Color.BLACK);
         }
 
-        g.drawArc(getX(), getY(),
-                2*CircuitSimulator.TERMINAL_R, 2*CircuitSimulator.TERMINAL_R,
-                0, 360);
+        int r= CircuitSimulator.TERMINAL_R;
+        g.drawArc(getX(), getY(),  2*r, 2*r, 0, 360);
 
         g2d.setStroke(currentStroke);
     }

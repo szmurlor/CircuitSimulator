@@ -5,6 +5,7 @@ import view.CircuitConnection;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -45,10 +46,10 @@ public class CircuitSimulatorWriter extends CircuitWriter {
             sb.append(c.getSrc().getParent().getIdx()).append(";");
             sb.append(c.getSrc().getParent().indexOf(c.getSrc())).append(";");
             sb.append(c.getDest().getParent().getIdx()).append(";");
-            sb.append(c.getDest().getParent().indexOf(c.getDest())).append(";");
+            sb.append(c.getDest().getParent().indexOf(c.getDest()));
             lines.add(sb.toString());
         }
 
-        Files.write(file.toPath(), lines);
+        Files.write(file.toPath(), lines, Charset.defaultCharset());
     }
 }

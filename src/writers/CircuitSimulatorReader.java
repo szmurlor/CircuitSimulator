@@ -2,10 +2,12 @@ package writers;
 
 import view.CircuitComponent;
 import view.CircuitConnection;
+import view.TerminalView;
 import view.components.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -17,8 +19,9 @@ import java.util.List;
 public class CircuitSimulatorReader {
     public void read(File selectedFile, Collection<CircuitComponent> comps, Collection<CircuitConnection> cons) throws Exception {
         List<CircuitComponent> tmpComps = new LinkedList<CircuitComponent>();
+        List<CircuitConnection> tmpCons = new LinkedList<CircuitConnection>();
 
-        List<String> lines = Files.readAllLines(selectedFile.toPath());
+        List<String> lines = Files.readAllLines(selectedFile.toPath(), Charset.defaultCharset());
         int i = 0;
 
         int ncom = Integer.parseInt(lines.get(i++));
@@ -41,9 +44,42 @@ public class CircuitSimulatorReader {
                 throw new Exception("Nieprawidłowy format pliku w linii " + i + ". Oczekiwałem 7 kolumn rozdzielonych średnikiem, a otrzymałem " + cols.length);
             }
         }
-
         comps.clear();;
         comps.addAll(tmpComps);
+
+        int ncon = Integer.parseInt(lines.get(i++));
+        for (int ic = 0; ic < ncon; ic++ ) {
+            String s = lines.get(i++);
+            String[] cols = s.split(";");
+
+            if (cols.length == 4) {
+                int idxSrcParent = Integer.parseInt(cols[0]);
+                int idxSrc = Integer.parseInt(cols[1]);
+                TerminalView src = findTerminalByParentIdx(comps, idxSrcParent, idxSrc);
+
+                int idxDestParent = Integer.parseInt(cols[2]);
+                int idxDest = Integer.parseInt(cols[3]);
+                TerminalView dst = findTerminalByParentIdx(comps, idxDestParent, idxDest);
+
+                CircuitConnection cc = new CircuitConnection(src, dst);
+
+                tmpCons.add(cc);
+            } else {
+                throw new Exception("Nieprawidłowy format pliku w linii " + i + ". Oczekiwałem 7 kolumn rozdzielonych średnikiem, a otrzymałem " + cols.length);
+            }
+        }
+
+        cons.clear();
+        cons.addAll(tmpCons);
+    }
+
+    private TerminalView findTerminalByParentIdx(Collection<CircuitComponent> comps, int idxParent, int idx) {
+        for (CircuitComponent cc: comps) {
+            if (cc.getIdx() == idxParent)
+                return cc.getTerminals().get(idx);
+        }
+
+        return null;
     }
 
     private CircuitComponent createComponent(String[] cols) throws Exception {
