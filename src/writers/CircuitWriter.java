@@ -13,4 +13,7 @@ import java.util.Collection;
 public abstract class CircuitWriter {
     public abstract void write(File file, Collection<CircuitComponent> components,
                                Collection<CircuitConnection> connections)  throws IOException;
+
+    public abstract void writeNgSpice(File file, Collection<CircuitComponent> components,
+                               Collection<CircuitConnection> connections)  throws IOException;
 }

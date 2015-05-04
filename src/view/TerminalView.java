@@ -11,6 +11,7 @@ public class TerminalView {
     int dy;
 
     boolean hovered;
+    private int idx;
 
     public TerminalView(CircuitComponent parent, int dx, int dy) {
         this.parent = parent;
@@ -65,5 +66,13 @@ public class TerminalView {
 
     public CircuitComponent getParent() {
         return parent;
+    }
+
+    public void setIdx(int idx) {
+        this.idx = idx;
+    }
+
+    public int getIdx() {
+        return idx;
     }
 }

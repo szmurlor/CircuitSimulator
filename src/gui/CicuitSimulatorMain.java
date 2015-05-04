@@ -22,6 +22,8 @@ public class CicuitSimulatorMain implements ActionListener {
     private JToolBar toolbar;
 
     private File lastFile;
+    private JMenuItem rbItemStatic;
+    private JMenuItem rbItemDynamic;
 
     public CicuitSimulatorMain() {
         zamknijButton.setActionCommand("exit");
@@ -112,7 +114,23 @@ public class CicuitSimulatorMain implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Podczas zapisu wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
                 }
             }
+        } else if (actionEvent.getActionCommand().equals("saveasNgSpice")) {
+            JFileChooser jfChooser = new JFileChooser();
+            jfChooser.setFileFilter(new FileNameExtensionFilter("NgSpice file (*.cir)","cir"));
+            jfChooser.setCurrentDirectory(lastFile);
 
+            int ret = jfChooser.showSaveDialog(rootPanel);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                lastFile = jfChooser.getSelectedFile();
+
+                CircuitSimulatorWriter csw = new CircuitSimulatorWriter();
+                try {
+                    csw.writeNgSpice(jfChooser.getSelectedFile(), circuitPanel.getCircuitComponents(), circuitPanel.getCircuitConnnections());
+                } catch (IOException e) {
+                    int mc = JOptionPane.ERROR_MESSAGE;
+                    JOptionPane.showMessageDialog(null, "Podczas zapisu wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
+                }
+            }
         } else if (actionEvent.getActionCommand().equals("open")) {
             JFileChooser jfChooser = new JFileChooser();
             jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","csm"));
@@ -125,18 +143,26 @@ public class CicuitSimulatorMain implements ActionListener {
                 CircuitSimulatorReader csr = new CircuitSimulatorReader();
                 try {
                     csr.read(jfChooser.getSelectedFile(), circuitPanel.getCircuitComponents(), circuitPanel.getCircuitConnnections());
+                    circuitPanel.repaint();
                 } catch (Exception e) {
                     int mc = JOptionPane.ERROR_MESSAGE;
                     JOptionPane.showMessageDialog (null, "Podczas otwierania wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
                 }
             }
 
+        } else if (actionEvent.getActionCommand().equals("simulationTypeStatic")) {
+            circuitPanel.setSimulationType(CircuitSimulator.SIMULATION_TYPE.STATIC);
+            circuitPanel.repaint();
+        } else if (actionEvent.getActionCommand().equals("simulationTypeDynamic")) {
+            circuitPanel.setSimulationType(CircuitSimulator.SIMULATION_TYPE.DYNAMIC);
+            circuitPanel.repaint();
         }
     }
 
     public JMenuBar createMenu() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Plik");
+        menuBar.add(menu);
 
         JMenuItem item = new JMenuItem("Nowy");
         item.setActionCommand("new");
@@ -159,13 +185,38 @@ public class CicuitSimulatorMain implements ActionListener {
         menu.add(item);
 
         menu.addSeparator();
+        item = new JMenuItem("Eksportuj NgSpice");
+        item.setActionCommand("saveasNgSpice");
+        item.addActionListener(this);
+        menu.add(item);
+        menu.addSeparator();
 
         item = new JMenuItem("Zakończ");
         item.setActionCommand("exit");
         item.addActionListener(this);
         menu.add(item);
 
+
+
+        menu = new JMenu("Symulacja");
         menuBar.add(menu);
+
+        ButtonGroup group = new ButtonGroup();
+
+        rbItemStatic = new JRadioButtonMenuItem("Symulacja statyczna");
+        rbItemStatic.setActionCommand("simulationTypeStatic");
+        rbItemStatic.addActionListener(this);
+        rbItemStatic.setSelected(true);
+        menu.add(rbItemStatic);
+        group.add(rbItemStatic);
+
+        rbItemDynamic = new JRadioButtonMenuItem("Symulacja czasowa");
+        rbItemDynamic.setActionCommand("simulationTypeDynamic");
+        rbItemDynamic.addActionListener(this);
+        rbItemDynamic.setSelected(false);
+        menu.add(rbItemDynamic);
+        group.add(rbItemDynamic);
+
         return menuBar;
     }
 }

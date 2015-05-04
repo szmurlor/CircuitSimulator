@@ -19,6 +19,7 @@ public class CircuitPanel extends JPanel implements ActionListener {
     java.util.List<CircuitComponent> components = new ArrayList<CircuitComponent>();
     java.util.List<CircuitConnection> connections = new ArrayList<CircuitConnection>();
     private CircuitConnection temporaryConnection = null;
+    private CircuitSimulator.SIMULATION_TYPE simulationType = CircuitSimulator.SIMULATION_TYPE.STATIC;
 
     public CircuitPanel() {
         // buildTestComponents();
@@ -250,7 +251,7 @@ public class CircuitPanel extends JPanel implements ActionListener {
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        graphics.drawString("Circuits Simulator " + Main.VERSION, 5, 20);
+        graphics.drawString("Circuits Simulator " + Main.VERSION + " (" + (simulationType == CircuitSimulator.SIMULATION_TYPE.STATIC ? "statyczna" : "czasowa") + ")", 5, 20);
 
         for (CircuitComponent cc: components) {
             cc.paintComponent(graphics);
@@ -290,5 +291,13 @@ public class CircuitPanel extends JPanel implements ActionListener {
 
     public Collection<CircuitConnection> getCircuitConnnections() {
         return connections;
+    }
+
+    public void setSimulationType(CircuitSimulator.SIMULATION_TYPE simulationType) {
+        this.simulationType = simulationType;
+    }
+
+    public CircuitSimulator.SIMULATION_TYPE getSimulationType() {
+        return simulationType;
     }
 }
