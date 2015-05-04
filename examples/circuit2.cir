@@ -1,0 +1,17 @@
+Moja symulacja
+
+
+VE 0 1 DC 10.0
+RR1 0 2 100.0
+LL 2 3 0.04
+CC 3 1 10.0
+RR2 2 1 20.0
+RR3 2 1 100.0
+RR4 3 2 100.0
+II8 4 2 DC 1.0
+R20 1 4 20.0
+.control
+op
+print v(1) v(2) v(3) v(4) 
+wrdata outresult v(1) v(2) v(3) v(4) 
+.endc

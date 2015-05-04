@@ -149,12 +149,13 @@ public class CicuitSimulatorMain implements ActionListener {
                     JOptionPane.showMessageDialog (null, "Podczas otwierania wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
                 }
             }
-
         } else if (actionEvent.getActionCommand().equals("simulationTypeStatic")) {
             circuitPanel.setSimulationType(CircuitSimulator.SIMULATION_TYPE.STATIC);
             circuitPanel.repaint();
         } else if (actionEvent.getActionCommand().equals("simulationTypeDynamic")) {
             circuitPanel.setSimulationType(CircuitSimulator.SIMULATION_TYPE.DYNAMIC);
+            circuitPanel.repaint();
+        } else if (actionEvent.getActionCommand().equals("simulate")) {
             circuitPanel.repaint();
         }
     }
@@ -216,6 +217,12 @@ public class CicuitSimulatorMain implements ActionListener {
         rbItemDynamic.setSelected(false);
         menu.add(rbItemDynamic);
         group.add(rbItemDynamic);
+
+        menu.addSeparator();
+        item = new JMenuItem("Symuluj");
+        item.setActionCommand("simulate");
+        item.addActionListener(this);
+        menu.add(item);
 
         return menuBar;
     }
