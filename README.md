@@ -63,5 +63,6 @@ Opis kolejnych etapów:
     * Dokończone wczytywanie CircuitConnection
     * Zapisywanie skryptu NgSpice
     * Wprowadzenie różnych rodzajów symulacji
-    * Uruchamianie NgSpice i pobieranie wyników
-    * Dodanie widoku konsoli (podglądu komunikatów NgSpice)
+    * Uruchamianie NgSpice i pobieranie wyników (raw file)
+    * Dodanie okna dialogowego konsoli NgSpice (podglądu komunikatów zwracanych przez NgSpice)
+    * Dodanie okna dialogowego preferencji
