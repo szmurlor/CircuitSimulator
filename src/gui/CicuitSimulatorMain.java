@@ -168,14 +168,20 @@ public class CicuitSimulatorMain implements ActionListener {
                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(pr.getOutputStream()));
                 NgSpiceConsole dialogConsole = new NgSpiceConsole(pr, pr.getInputStream());
                 dialogConsole.setTitle("Konsolas NgSpice");
-                dialogConsole.setVisible(true);
                 dialogConsole.pack();
+                dialogConsole.setVisible(true);
                 circuitPanel.repaint();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+        } else if (actionEvent.getActionCommand().equals("preferences")) {
+            PreferencesDialog pd = new PreferencesDialog();
+            pd.pack();
+            pd.setModal(true);
+            pd.setVisible(true);
+            circuitPanel.repaint();
         }
     }
 
@@ -251,6 +257,11 @@ public class CicuitSimulatorMain implements ActionListener {
 
         item = new JMenuItem("Wyświetl konsolę");
         item.setActionCommand("showConsole");
+        item.addActionListener(this);
+        menu.add(item);
+
+        item = new JMenuItem("Preferencje");
+        item.setActionCommand("preferences");
         item.addActionListener(this);
         menu.add(item);
 

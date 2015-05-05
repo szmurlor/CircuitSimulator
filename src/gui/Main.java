@@ -1,6 +1,7 @@
 package gui;
 
 import gui.CicuitSimulatorMain;
+import view.CircuitSimulator;
 
 import javax.swing.*;
 
@@ -20,6 +21,8 @@ public class Main {
             e.printStackTrace();
         }
         */
+
+        CircuitSimulator.loadPreferences();
 
         UIManager.put("swing.boldMetal", Boolean.FALSE);
         JFrame frame = new JFrame("Circuits Simulator " + VERSION);
