@@ -8,6 +8,11 @@ import java.util.prefs.Preferences;
 public class CircuitSimulator {
     public static final int TERMINAL_R = 3;
     public static final double CONNECTION_DISTANCE = 4;
+    public static String logFileName = "ngspice.log";
+    public static String rawFileName = "ngspice.raw";
+    public static String circuitNgSpiceName = "ngspice.cir";
+    public static String initNgSpiceName = "spinit";
+    public static String wrdataNgSpice = "outdata";
 
     public enum SIMULATION_TYPE {STATIC, DYNAMIC}
 

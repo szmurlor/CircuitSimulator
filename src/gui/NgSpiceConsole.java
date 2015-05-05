@@ -1,18 +1,16 @@
 package gui;
 
+import view.CircuitSimulator;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class NgSpiceConsole extends JDialog {
 
     private Timer timer;
     private Process pr;
-    private InputStream in;
     private JPanel contentPane;
     private JButton buttonOK;
     private JTextArea txtOutput;
@@ -27,27 +25,55 @@ public class NgSpiceConsole extends JDialog {
                 onOK();
             }
         });
+/*
+        JScrollPane scroll = new JScrollPane(txtOutput);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        contentPane.add(scroll);
+*/
     }
 
-    public NgSpiceConsole(Process pr, InputStream in) {
+    public NgSpiceConsole(Process proc) {
         this();
-        this.pr = pr;
-        this.in = in;
+        this.pr = proc;
 
         timer = new Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                timer.stop();
+                BufferedReader br = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line;
                 try {
-                    if (NgSpiceConsole.this.in.available() != 0) {
-                        InputStreamReader r = new InputStreamReader(NgSpiceConsole.this.in);
-                        BufferedReader br = new BufferedReader(r);
-                        String line = br.readLine();
-                        if (line != null) {
-                            txtOutput.append(line);
-                            txtOutput.append("\n");
-                        }
+                    while ((line = br.readLine()) != null) {
+                        txtOutput.append(line);
+                        txtOutput.append("\n");
                     }
+                    br.close();
                 } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+
+                try {
+                    txtOutput.append("\n\nLog:\n");
+                    br = new BufferedReader(new FileReader(CircuitSimulator.workdir + File.separator + CircuitSimulator.logFileName));
+                    while ((line = br.readLine()) != null) {
+                        txtOutput.append(line);
+                        txtOutput.append("\n");
+                    }
+                    br.close();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+
+                try {
+                    txtOutput.append("\n\nwrdata:\n");
+                    br = new BufferedReader(new FileReader(CircuitSimulator.workdir + File.separator + CircuitSimulator.wrdataNgSpice + ".data"));
+                    while ((line = br.readLine()) != null) {
+                        txtOutput.append(line);
+                        txtOutput.append("\n");
+                    }
+                    br.close();
+                } catch (Exception e1) {
                     e1.printStackTrace();
                 }
             }
@@ -56,7 +82,7 @@ public class NgSpiceConsole extends JDialog {
     }
 
     private void onOK() {
-        pr.destroy();
         dispose();
     }
+
 }

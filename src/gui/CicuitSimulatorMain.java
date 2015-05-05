@@ -10,7 +10,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -157,21 +160,28 @@ public class CicuitSimulatorMain implements ActionListener {
             circuitPanel.setSimulationType(CircuitSimulator.SIMULATION_TYPE.DYNAMIC);
             circuitPanel.repaint();
         } else if (actionEvent.getActionCommand().equals("simulate")) {
-            circuitPanel.repaint();
-        } else if (actionEvent.getActionCommand().equals("showConsole")) {
-            ProcessBuilder ps = new ProcessBuilder("/bin/bash", "-c", "ngspice -b"); //, "-b", "/home/szmurlor/src/idea/CircuitSimulator/examples/circuit2.cir");
-            // ProcessBuilder ps = new ProcessBuilder("ngspice", "-i");
-            ps.redirectErrorStream(true);
-
+            File f = new File(CircuitSimulator.workdir + File.separator + CircuitSimulator.initNgSpiceName);
+            List<String> lst = new LinkedList<String>();
+            lst.add("set filetype=ascii");
             try {
+                // zapisuję spinit
+                Files.write(f.toPath(), lst, Charset.defaultCharset());
+
+                File fcir = new File( CircuitSimulator.workdir + File.separator + CircuitSimulator.circuitNgSpiceName);
+                CircuitSimulatorWriter csw = new CircuitSimulatorWriter();
+                csw.writeNgSpice(fcir, circuitPanel.getCircuitComponents(), circuitPanel.getCircuitConnnections());
+
+                ProcessBuilder ps = new ProcessBuilder(CircuitSimulator.ngspiceExe, "-b", "-o", CircuitSimulator.logFileName, "-r", CircuitSimulator.rawFileName, CircuitSimulator.circuitNgSpiceName);
+                ps.directory(new File(CircuitSimulator.workdir));
+                ps.redirectErrorStream(true);
+
                 Process pr = ps.start();
-                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(pr.getOutputStream()));
-                NgSpiceConsole dialogConsole = new NgSpiceConsole(pr, pr.getInputStream());
-                dialogConsole.setTitle("Konsolas NgSpice");
+
+                NgSpiceConsole dialogConsole = new NgSpiceConsole(pr);
+                dialogConsole.setTitle("Okno komunikatów NgSpice");
                 dialogConsole.pack();
                 dialogConsole.setVisible(true);
                 circuitPanel.repaint();
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -253,12 +263,6 @@ public class CicuitSimulatorMain implements ActionListener {
 
 
         menu.addSeparator();
-
-
-        item = new JMenuItem("Wyświetl konsolę");
-        item.setActionCommand("showConsole");
-        item.addActionListener(this);
-        menu.add(item);
 
         item = new JMenuItem("Preferencje");
         item.setActionCommand("preferences");

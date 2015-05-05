@@ -2,6 +2,7 @@ package writers;
 
 import view.CircuitComponent;
 import view.CircuitConnection;
+import view.CircuitSimulator;
 import view.TerminalView;
 import view.components.*;
 
@@ -112,7 +113,7 @@ public class CircuitSimulatorWriter extends CircuitWriter {
             sb.append("v(" + i + ") ");
         }
         lines.add("print " + sb.toString());
-        lines.add("wrdata outresult " + sb.toString());
+        lines.add("wrdata " + CircuitSimulator.wrdataNgSpice + " "  + sb.toString());
         lines.add(".endc");
 
         Files.write(file.toPath(), lines, Charset.defaultCharset());
