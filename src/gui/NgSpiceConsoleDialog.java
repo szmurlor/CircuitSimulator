@@ -40,6 +40,8 @@ public class NgSpiceConsoleDialog extends JDialog {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                timer.stop();
             }
         });
         timer.start();
