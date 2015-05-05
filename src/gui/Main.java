@@ -1,6 +1,7 @@
 package gui;
 
 import gui.CicuitSimulatorMain;
+import view.CircuitSimulator;
 
 import javax.swing.*;
 
@@ -9,7 +10,9 @@ public class Main {
     public static final String VERSION = "v0.3Alpha";
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        // System.out.println("Hello World!");
+
+        CircuitSimulator.loadPreferences();
 
 
         /*

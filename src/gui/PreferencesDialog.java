@@ -1,5 +1,7 @@
 package gui;
 
+import view.CircuitSimulator;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
@@ -10,6 +12,8 @@ public class PreferencesDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField txtNgSpiceExe;
     private JButton cmdNgSpiceExe;
+    private JTextField txtWorkdir;
+    private JButton cmdbrowseWorkdir;
 
     public PreferencesDialog() {
         setContentPane(contentPane);
@@ -28,7 +32,6 @@ public class PreferencesDialog extends JDialog {
             }
         });
 
-// call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -36,7 +39,6 @@ public class PreferencesDialog extends JDialog {
             }
         });
 
-// call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -52,11 +54,35 @@ public class PreferencesDialog extends JDialog {
                 }
             }
         });
+
+        data2form();
+        cmdbrowseWorkdir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser fc = new JFileChooser();
+                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                if (fc.showOpenDialog(PreferencesDialog.this) == JFileChooser.APPROVE_OPTION) {
+                    txtWorkdir.setText( fc.getSelectedFile().getAbsolutePath() );
+                }
+            }
+        });
     }
 
     private void onOK() {
 // add your code here
+        form2data();
+        CircuitSimulator.savePreferences();
         dispose();
+    }
+
+    private void form2data() {
+        CircuitSimulator.ngSpiceExe = txtNgSpiceExe.getText();
+        CircuitSimulator.workdir = txtWorkdir.getText();
+    }
+
+    private void data2form() {
+        txtNgSpiceExe.setText(CircuitSimulator.ngSpiceExe);
+        txtWorkdir.setText(CircuitSimulator.workdir);
     }
 
     private void onCancel() {
