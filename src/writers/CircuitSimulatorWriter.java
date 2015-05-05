@@ -57,8 +57,8 @@ public class CircuitSimulatorWriter extends CircuitWriter {
     @Override
     public void writeNgSpice(File file, Collection<CircuitComponent> coms, Collection<CircuitConnection> cons) throws IOException {
 
-        renumerateIdx(coms, cons);
-        // renumerateIdxV2(coms, cons);
+        //renumerateIdx(coms, cons);
+        renumerateIdxV2(coms, cons);
 
         List<String> lines = new LinkedList<String>();
         lines.add("Moja symulacja");
@@ -108,31 +108,49 @@ public class CircuitSimulatorWriter extends CircuitWriter {
         for (CircuitComponent c: coms) {
             for (TerminalView t: c.getTerminals()) {
                 Collection<CircuitConnection> tCons = findConnectionsWithTerminal(cons, t);
+                boolean found = false;
                 for (CircuitConnection con : tCons) {
                     if (done.contains(con)) {
                         t.setIdx(con.getIdx());
-                        break;
+                        found = true;
                     }
                 }
 
-                current.clear();
-                addConnectionsWithTerminalAndNeighbours(current, cons, t);
+                if (!found) {
+                    current.clear();
+                    addConnectionsWithTerminalAndNeighbours(current, cons, t);
 
-                int imin = idx;
-                for( CircuitConnection cc: current) {
-                    if (cc.getIdx() < idx)
-                        imin = cc.getIdx();
-                }
+                    int imin = idx;
+                    for (CircuitConnection cc : current) {
+                        if (cc.getIdx() < idx)
+                            imin = cc.getIdx();
+                    }
 
-                for( CircuitConnection cc: current) {
-                    cc.setIdx(imin);
+                    if (imin == idx)
+                        idx++;
+
+                    t.setIdx(imin);
+                    for (CircuitConnection cc : current) {
+                        cc.setIdx(imin);
+                    }
+                    done.addAll(current);
                 }
-                done.addAll(current);
             }
         }
     }
 
     private void addConnectionsWithTerminalAndNeighbours(Set<CircuitConnection> res, Collection<CircuitConnection> cons, TerminalView t) {
+        for (CircuitConnection c: findConnectionsWithTerminal(cons, t)) {
+            if (!res.contains(c)) {
+                res.add(c);
+
+                if (c.getSrc().equals(t)) {
+                    addConnectionsWithTerminalAndNeighbours(res, cons, c.getDest());
+                } else {
+                    addConnectionsWithTerminalAndNeighbours(res, cons, c.getSrc());
+                }
+            }
+        }
     }
 
     private void renumerateIdx(Collection<CircuitComponent> coms, Collection<CircuitConnection> cons) {
