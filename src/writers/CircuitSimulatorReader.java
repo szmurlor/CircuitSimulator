@@ -2,6 +2,7 @@ package writers;
 
 import view.CircuitComponent;
 import view.CircuitConnection;
+import view.TerminalView;
 import view.components.*;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.List;
 public class CircuitSimulatorReader {
     public void read(File selectedFile, Collection<CircuitComponent> comps, Collection<CircuitConnection> cons) throws Exception {
         List<CircuitComponent> tmpComps = new LinkedList<CircuitComponent>();
+        List<CircuitConnection> tmpCons = new LinkedList<CircuitConnection>();
 
         List<String> lines = Files.readAllLines(selectedFile.toPath());
         int i = 0;
@@ -41,9 +43,43 @@ public class CircuitSimulatorReader {
                 throw new Exception("Nieprawidłowy format pliku w linii " + i + ". Oczekiwałem 7 kolumn rozdzielonych średnikiem, a otrzymałem " + cols.length);
             }
         }
-
         comps.clear();;
         comps.addAll(tmpComps);
+
+        int ncon = Integer.parseInt(lines.get(i++));
+        for (int ic = 0; ic < ncon; ic++ ) {
+            String s = lines.get(i++);
+            String[] cols = s.split(";");
+
+            if (cols.length == 4) {
+                int idxSrc = Integer.parseInt(cols[0]);
+                int iSrcTerm = Integer.parseInt(cols[1]);
+                int idxDest = Integer.parseInt(cols[2]);
+                int iDestTerm = Integer.parseInt(cols[3]);
+
+                CircuitComponent cSrc = findByIdx(tmpComps, idxSrc);
+                CircuitComponent cDest = findByIdx(tmpComps, idxDest);
+
+                TerminalView src = cSrc.getTerminals().get(iSrcTerm);
+                TerminalView dest = cDest.getTerminals().get(iDestTerm);
+
+                CircuitConnection con = new CircuitConnection(src, dest);
+                tmpCons.add(con);
+            } else {
+                throw new Exception("Nieprawidłowy format pliku w linii " + i + ". Oczekiwałem 7 kolumn rozdzielonych średnikiem, a otrzymałem " + cols.length);
+            }
+        }
+
+        cons.clear();
+        cons.addAll(tmpCons);
+    }
+
+    private CircuitComponent findByIdx(List<CircuitComponent> comps, int idx) {
+        for (CircuitComponent cc: comps)
+            if (cc.getIdx() == idx)
+                return cc;
+
+        return null;
     }
 
     private CircuitComponent createComponent(String[] cols) throws Exception {
