@@ -131,6 +131,28 @@ public class CicuitSimulatorMain implements ActionListener {
                 }
             }
 
+        } else if (actionEvent.getActionCommand().equals("exportNgSpice")) {
+            JFileChooser jfChooser = new JFileChooser();
+            jfChooser.setFileFilter(new FileNameExtensionFilter("NgSpice script (*.cir)","cir"));
+            jfChooser.setCurrentDirectory(lastFile);
+
+            int ret = jfChooser.showSaveDialog(rootPanel);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                lastFile = jfChooser.getSelectedFile();
+
+                CircuitSimulatorWriter csw = new CircuitSimulatorWriter();
+                try {
+                    csw.writeNgSpice(jfChooser.getSelectedFile(), circuitPanel.getCircuitComponents(), circuitPanel.getCircuitConnnections());
+                } catch (IOException e) {
+                    int mc = JOptionPane.ERROR_MESSAGE;
+                    JOptionPane.showMessageDialog(null, "Podczas eksportu skryptu NgSpice wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
+                }
+            }
+
+        } else if (actionEvent.getActionCommand().equals("preferences")) {
+            PreferencesDialog pd = new PreferencesDialog();
+            pd.pack();
+            pd.setVisible(true);
         }
     }
 
@@ -160,12 +182,31 @@ public class CicuitSimulatorMain implements ActionListener {
 
         menu.addSeparator();
 
+        item = new JMenuItem("Eksportuj do NgSpice");
+        item.setActionCommand("exportNgSpice");
+        item.addActionListener(this);
+        menu.add(item);
+
+        menu.addSeparator();
+
         item = new JMenuItem("Zakończ");
         item.setActionCommand("exit");
         item.addActionListener(this);
         menu.add(item);
 
         menuBar.add(menu);
+
+        menu = new JMenu("Symulacja");
+
+        item = new JMenuItem("Preferencje");
+        item.setActionCommand("preferences");
+        item.addActionListener(this);
+
+        menu.add(item);
+
+        menuBar.add(menu);
+
+
         return menuBar;
     }
 }
