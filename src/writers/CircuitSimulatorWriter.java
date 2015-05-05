@@ -2,9 +2,13 @@ package writers;
 
 import view.CircuitComponent;
 import view.CircuitConnection;
+import view.CircuitSimulator;
+import view.TerminalView;
+import view.components.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -50,5 +54,78 @@ public class CircuitSimulatorWriter extends CircuitWriter {
         }
 
         Files.write(file.toPath(), lines);
+    }
+
+    @Override
+    public void writeNgSpice(File file, Collection<CircuitComponent> coms, Collection<CircuitConnection> cons) throws IOException {
+
+        for (CircuitConnection con: cons) {
+            con.setIdx(Integer.MAX_VALUE);
+        }
+
+        int idx = 0;
+        for (CircuitComponent c: coms) {
+            c.setIdx(idx);
+
+            for (TerminalView t: c.getTerminals()) {
+                Collection<CircuitConnection> tCons = findConnectionsWithTerminal(cons, t);
+                int min = idx;
+                for (CircuitConnection con: tCons) {
+                    if (min > con.getIdx())
+                        min = con.getIdx();
+                }
+
+                for (CircuitConnection con: tCons)
+                    con.setIdx(min);
+
+                t.setIdx(min);
+                if (min == idx)
+                    idx++;
+            }
+        }
+
+        List<String> lines = new LinkedList<String>();
+        lines.add("Moja symulacja");
+        lines.add("\n");
+
+        int imax = 0;
+        for (CircuitComponent com: coms) {
+            for (TerminalView t: com.getTerminals()) {
+                if (t.getIdx() > imax)
+                    imax = t.getIdx();
+            }
+            if (com instanceof ResistorView) {
+                lines.add("R" + com.name + " " + com.getTerminals().get(0).getIdx() + " " + com.getTerminals().get(1).getIdx() + " " + com.getElectricalValue() );
+            } else if (com instanceof CapacitorView) {
+                lines.add("C" + com.name + " " + com.getTerminals().get(0).getIdx() + " " + com.getTerminals().get(1).getIdx() + " " + com.getElectricalValue() );
+            } else if (com instanceof CoilView) {
+                lines.add("L" + com.name + " " + com.getTerminals().get(0).getIdx() + " " + com.getTerminals().get(1).getIdx() + " " + com.getElectricalValue() );
+            } else if (com instanceof CurrentSourceView) {
+                lines.add("I" + com.name + " " + com.getTerminals().get(0).getIdx() + " " + com.getTerminals().get(1).getIdx() + " DC " + com.getElectricalValue() );
+            } else if (com instanceof VoltageSourceView) {
+                lines.add("V" + com.name + " " + com.getTerminals().get(0).getIdx() + " " + com.getTerminals().get(1).getIdx() + " DC " + com.getElectricalValue() );
+            }
+        }
+        lines.add(".control");
+        lines.add("op");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= imax; i++) {
+            sb.append("v(" + i + ") ");
+        }
+        lines.add("print " + sb.toString());
+        lines.add("wrdata " + CircuitSimulator.wrdataNgSpice + " "  + sb.toString());
+        lines.add(".endc");
+
+        Files.write(file.toPath(), lines, Charset.defaultCharset());
+
+    }
+
+    private Collection<CircuitConnection> findConnectionsWithTerminal(Collection<CircuitConnection> cons, TerminalView t) {
+        Collection<CircuitConnection> res = new LinkedList<CircuitConnection>();
+        for (CircuitConnection con: cons) {
+            if (con.getSrc().equals(t) || con.getDest().equals(t))
+                res.add(con);
+        }
+        return res;
     }
 }

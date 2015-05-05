@@ -9,6 +9,7 @@ public class CircuitConnection {
     protected TerminalView src;
     protected TerminalView dest;
     private boolean selected;
+    private int idx;
 
     public boolean isInside(int x, int y) {
         int r = CircuitSimulator.TERMINAL_R;
@@ -57,5 +58,13 @@ public class CircuitConnection {
 
     public TerminalView getDest() {
         return dest;
+    }
+
+    public void setIdx(int idx) {
+        this.idx = idx;
+    }
+
+    public int getIdx() {
+        return idx;
     }
 }
