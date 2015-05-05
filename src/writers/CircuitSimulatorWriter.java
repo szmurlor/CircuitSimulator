@@ -51,7 +51,7 @@ public class CircuitSimulatorWriter extends CircuitWriter {
             lines.add(sb.toString());
         }
 
-        Files.write(file.toPath(), lines);
+        Files.write(file.toPath(), lines, Charset.defaultCharset());
     }
 
     @Override

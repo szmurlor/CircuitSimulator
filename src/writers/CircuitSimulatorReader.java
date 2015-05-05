@@ -7,6 +7,7 @@ import view.components.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ public class CircuitSimulatorReader {
         List<CircuitComponent> tmpComps = new LinkedList<CircuitComponent>();
         List<CircuitConnection> tmpCons = new LinkedList<CircuitConnection>();
 
-        List<String> lines = Files.readAllLines(selectedFile.toPath());
+        List<String> lines = Files.readAllLines(selectedFile.toPath(), Charset.defaultCharset());
         int i = 0;
 
         int ncom = Integer.parseInt(lines.get(i++));
