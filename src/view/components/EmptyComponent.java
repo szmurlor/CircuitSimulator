@@ -12,7 +12,7 @@ public class EmptyComponent extends CircuitComponent {
     public EmptyComponent(int x, int y) {
         super(x, y, 2* CircuitSimulator.TERMINAL_R, 2*CircuitSimulator.TERMINAL_R, "Brak:", "");
 
-        getTerminals().add(new TerminalView(this,0,0));
+        getTerminals().add(new TerminalView(this,0,0, -2*CircuitSimulator.TERMINAL_R, -3*CircuitSimulator.TERMINAL_R));
     }
 
     @Override

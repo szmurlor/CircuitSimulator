@@ -9,14 +9,18 @@ public class TerminalView {
     CircuitComponent parent;
     int dx;
     int dy;
+    int dxt;
+    int dyt;
 
     boolean hovered;
     private int idx;
 
-    public TerminalView(CircuitComponent parent, int dx, int dy) {
+    public TerminalView(CircuitComponent parent, int dx, int dy, int dxt, int dyt) {
         this.parent = parent;
         this.dx = dx;
         this.dy = dy;
+        this.dxt = dxt;
+        this.dyt = dyt;
     }
 
     public void paint(Graphics g) {
@@ -32,10 +36,16 @@ public class TerminalView {
         }
 
         g.drawArc(getX(), getY(),
-                2*CircuitSimulator.TERMINAL_R, 2*CircuitSimulator.TERMINAL_R,
+                2 * CircuitSimulator.TERMINAL_R, 2 * CircuitSimulator.TERMINAL_R,
                 0, 360);
 
         g2d.setStroke(currentStroke);
+
+        if (CircuitSimulator.showTerminalIdx) {
+            g.setColor(Color.BLUE);
+            ((Graphics2D) g).drawString(String.valueOf(getIdx()), getX() + dxt, getY() + dyt);
+            g.setColor(Color.BLACK);
+        }
     }
 
     public int getY() {

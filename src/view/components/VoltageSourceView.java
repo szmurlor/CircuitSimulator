@@ -11,8 +11,8 @@ public class VoltageSourceView extends CircuitComponent {
         super(x, y, 30, 30, "Napięcie: ", "[V]");
 
         int r = CircuitSimulator.TERMINAL_R;
-        getTerminals().add( new TerminalView(this, -2*r, h/2-r) );
-        getTerminals().add(new TerminalView(this, w, h / 2 - r));
+        getTerminals().add( new TerminalView(this, -2*r, h/2-r, -2*r, -3*r) );
+        getTerminals().add(new TerminalView(this, w, h / 2 - r, 4*r, 5*r));
     }
 
     @Override

@@ -17,14 +17,17 @@ public class CircuitSimulator {
     public static String logNgSpiceFile = "ngspice.log";
     public static String rawNgSpiceFile = "ngspice.raw";
     public static String scriptNgSpiceFile = "ngspice.cir";
+    public static boolean showTerminalIdx = false;
 
     public static void loadPreferences() {
         ngSpiceExe = prefs.get("ngSpiceExe", "brak danych");
         workdir = prefs.get("workdir", System.getProperty("user.dir"));
+        showTerminalIdx = prefs.getBoolean("showTerminalIdx", false);
     }
 
     public static void savePreferences() {
         prefs.put("ngSpiceExe", ngSpiceExe);
         prefs.put("workdir", workdir);
+        prefs.putBoolean("showTerminalIdx", showTerminalIdx);
     }
 }

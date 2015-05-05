@@ -113,6 +113,7 @@ public class CircuitSimulatorWriter extends CircuitWriter {
                     if (done.contains(con)) {
                         t.setIdx(con.getIdx());
                         found = true;
+                        break;
                     }
                 }
 

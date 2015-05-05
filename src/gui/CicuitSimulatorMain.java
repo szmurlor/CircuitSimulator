@@ -22,6 +22,7 @@ public class CicuitSimulatorMain implements ActionListener {
     private JToolBar toolbar;
 
     private File lastFile;
+    private JCheckBoxMenuItem chkShowTerminalIndex;
 
     public CicuitSimulatorMain() {
         zamknijButton.setActionCommand("exit");
@@ -92,9 +93,23 @@ public class CicuitSimulatorMain implements ActionListener {
         } else if (actionEvent.getActionCommand().equals("exit")) {
             System.exit(0);
         } else if (actionEvent.getActionCommand().equals("new")) {
+            lastFile = null;
             circuitPanel.getCircuitComponents().clear();
             circuitPanel.getCircuitConnnections().clear();
             circuitPanel.repaint();
+        } else if (actionEvent.getActionCommand().equals("save")) {
+            if (lastFile != null) {
+                CircuitSimulatorWriter csw = new CircuitSimulatorWriter();
+                try {
+                    csw.write(lastFile, circuitPanel.getCircuitComponents(), circuitPanel.getCircuitConnnections());
+                } catch (IOException e) {
+                    int mc = JOptionPane.ERROR_MESSAGE;
+                    JOptionPane.showMessageDialog(null, "Podczas zapisu wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
+                }
+            } else {
+                int mc = JOptionPane.ERROR_MESSAGE;
+                JOptionPane.showMessageDialog(null, "Nie mogę zapisać danych, ponieważ brak informacji o poprzednio używanym pliku. Wybierz Save as...", "Błąd zapisu", mc);
+            }
         } else if (actionEvent.getActionCommand().equals("saveas")) {
             JFileChooser jfChooser = new JFileChooser();
             jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","csm"));
@@ -115,7 +130,7 @@ public class CicuitSimulatorMain implements ActionListener {
 
         } else if (actionEvent.getActionCommand().equals("open")) {
             JFileChooser jfChooser = new JFileChooser();
-            jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","csm"));
+            jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)", "csm"));
             if (lastFile == null)
                 jfChooser.setCurrentDirectory(new File(CircuitSimulator.prefs.get("lastFile", "")));
             else
@@ -137,7 +152,7 @@ public class CicuitSimulatorMain implements ActionListener {
 
         } else if (actionEvent.getActionCommand().equals("exportNgSpice")) {
             JFileChooser jfChooser = new JFileChooser();
-            jfChooser.setFileFilter(new FileNameExtensionFilter("NgSpice script (*.cir)","cir"));
+            jfChooser.setFileFilter(new FileNameExtensionFilter("NgSpice script (*.cir)", "cir"));
             jfChooser.setCurrentDirectory(lastFile);
 
             int ret = jfChooser.showSaveDialog(rootPanel);
@@ -181,6 +196,10 @@ public class CicuitSimulatorMain implements ActionListener {
                 int mc = JOptionPane.ERROR_MESSAGE;
                 JOptionPane.showMessageDialog(null, "Podczas uruchamiania skryptu NgSpice wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
             }
+        } else if (actionEvent.getActionCommand().equals("showTerminalIndex")) {
+            CircuitSimulator.showTerminalIdx = chkShowTerminalIndex.isSelected();
+            CircuitSimulator.savePreferences();
+            circuitPanel.repaint();
         }
     }
 
@@ -225,6 +244,7 @@ public class CicuitSimulatorMain implements ActionListener {
         menuBar.add(menu);
 
         menu = new JMenu("Symulacja");
+        menuBar.add(menu);
 
         item = new JMenuItem("Uruchom symulacje");
         item.setActionCommand("simulate");
@@ -238,8 +258,14 @@ public class CicuitSimulatorMain implements ActionListener {
         item.addActionListener(this);
         menu.add(item);
 
+
+        menu = new JMenu("Widok");
         menuBar.add(menu);
 
+        chkShowTerminalIndex = new JCheckBoxMenuItem("Pokazuj indeks węzłów");
+        chkShowTerminalIndex.setActionCommand("showTerminalIndex");
+        chkShowTerminalIndex.addActionListener(this);
+        menu.add(chkShowTerminalIndex);
 
         return menuBar;
     }
