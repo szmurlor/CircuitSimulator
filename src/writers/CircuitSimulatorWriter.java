@@ -10,9 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by GR5 on 21.04.15.
@@ -59,30 +57,8 @@ public class CircuitSimulatorWriter extends CircuitWriter {
     @Override
     public void writeNgSpice(File file, Collection<CircuitComponent> coms, Collection<CircuitConnection> cons) throws IOException {
 
-        for (CircuitConnection con: cons) {
-            con.setIdx(Integer.MAX_VALUE);
-        }
-
-        int idx = 0;
-        for (CircuitComponent c: coms) {
-            c.setIdx(idx);
-
-            for (TerminalView t: c.getTerminals()) {
-                Collection<CircuitConnection> tCons = findConnectionsWithTerminal(cons, t);
-                int min = idx;
-                for (CircuitConnection con: tCons) {
-                    if (min > con.getIdx())
-                        min = con.getIdx();
-                }
-
-                for (CircuitConnection con: tCons)
-                    con.setIdx(min);
-
-                t.setIdx(min);
-                if (min == idx)
-                    idx++;
-            }
-        }
+        renumerateIdx(coms, cons);
+        // renumerateIdxV2(coms, cons);
 
         List<String> lines = new LinkedList<String>();
         lines.add("Moja symulacja");
@@ -118,6 +94,72 @@ public class CircuitSimulatorWriter extends CircuitWriter {
 
         Files.write(file.toPath(), lines, Charset.defaultCharset());
 
+    }
+
+    private void renumerateIdxV2(Collection<CircuitComponent> coms, Collection<CircuitConnection> cons) {
+        for (CircuitConnection con: cons) {
+            con.setIdx(Integer.MAX_VALUE);
+        }
+
+        Set<CircuitConnection> done = new HashSet<CircuitConnection>();
+        Set<CircuitConnection> current = new HashSet<CircuitConnection>();
+
+        int idx = 0;
+        for (CircuitComponent c: coms) {
+            for (TerminalView t: c.getTerminals()) {
+                Collection<CircuitConnection> tCons = findConnectionsWithTerminal(cons, t);
+                for (CircuitConnection con : tCons) {
+                    if (done.contains(con)) {
+                        t.setIdx(con.getIdx());
+                        break;
+                    }
+                }
+
+                current.clear();
+                addConnectionsWithTerminalAndNeighbours(current, cons, t);
+
+                int imin = idx;
+                for( CircuitConnection cc: current) {
+                    if (cc.getIdx() < idx)
+                        imin = cc.getIdx();
+                }
+
+                for( CircuitConnection cc: current) {
+                    cc.setIdx(imin);
+                }
+                done.addAll(current);
+            }
+        }
+    }
+
+    private void addConnectionsWithTerminalAndNeighbours(Set<CircuitConnection> res, Collection<CircuitConnection> cons, TerminalView t) {
+    }
+
+    private void renumerateIdx(Collection<CircuitComponent> coms, Collection<CircuitConnection> cons) {
+        for (CircuitConnection con: cons) {
+            con.setIdx(Integer.MAX_VALUE);
+        }
+
+        int idx = 0;
+        for (CircuitComponent c: coms) {
+            c.setIdx(idx);
+
+            for (TerminalView t: c.getTerminals()) {
+                Collection<CircuitConnection> tCons = findConnectionsWithTerminal(cons, t);
+                int min = idx;
+                for (CircuitConnection con: tCons) {
+                    if (min > con.getIdx())
+                        min = con.getIdx();
+                }
+
+                for (CircuitConnection con: tCons)
+                    con.setIdx(min);
+
+                t.setIdx(min);
+                if (min == idx)
+                    idx++;
+            }
+        }
     }
 
     private Collection<CircuitConnection> findConnectionsWithTerminal(Collection<CircuitConnection> cons, TerminalView t) {

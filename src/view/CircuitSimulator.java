@@ -14,6 +14,9 @@ public class CircuitSimulator {
     public static String workdir;
 
     public static Preferences prefs = Preferences.userNodeForPackage(CircuitSimulator.class);
+    public static String logNgSpiceFile = "ngspice.log";
+    public static String rawNgSpiceFile = "ngspice.raw";
+    public static String scriptNgSpiceFile = "ngspice.cir";
 
     public static void loadPreferences() {
         ngSpiceExe = prefs.get("ngSpiceExe", "brak danych");

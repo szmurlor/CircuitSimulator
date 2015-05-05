@@ -116,11 +116,15 @@ public class CicuitSimulatorMain implements ActionListener {
         } else if (actionEvent.getActionCommand().equals("open")) {
             JFileChooser jfChooser = new JFileChooser();
             jfChooser.setFileFilter(new FileNameExtensionFilter("Circuit Simulator file (*.csm)","csm"));
-            jfChooser.setCurrentDirectory(lastFile);
+            if (lastFile == null)
+                jfChooser.setCurrentDirectory(new File(CircuitSimulator.prefs.get("lastFile", "")));
+            else
+                jfChooser.setCurrentDirectory(lastFile);
 
             int ret = jfChooser.showOpenDialog(rootPanel);
             if (ret == JFileChooser.APPROVE_OPTION) {
                 lastFile = jfChooser.getSelectedFile();
+                CircuitSimulator.prefs.put("lastFile", lastFile.getAbsolutePath());
 
                 CircuitSimulatorReader csr = new CircuitSimulatorReader();
                 try {
@@ -153,6 +157,30 @@ public class CicuitSimulatorMain implements ActionListener {
             PreferencesDialog pd = new PreferencesDialog();
             pd.pack();
             pd.setVisible(true);
+        } else if (actionEvent.getActionCommand().equals("simulate")) {
+            ProcessBuilder pb = new ProcessBuilder(CircuitSimulator.ngSpiceExe,
+                    "-b", "-o", CircuitSimulator.logNgSpiceFile, "-r", CircuitSimulator.rawNgSpiceFile,
+                    CircuitSimulator.scriptNgSpiceFile);
+            pb.directory(new File(CircuitSimulator.workdir));
+            pb.redirectErrorStream(true);
+
+            try {
+                CircuitSimulatorWriter csw = new CircuitSimulatorWriter();
+                csw.writeNgSpice(new File(CircuitSimulator.workdir + File.separator + CircuitSimulator.scriptNgSpiceFile),
+                        circuitPanel.getCircuitComponents(),
+                        circuitPanel.getCircuitConnnections());
+
+                Process p = pb.start();
+
+                NgSpiceConsoleDialog diag = new NgSpiceConsoleDialog();
+                diag.pack();
+                diag.setVisible(true);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                int mc = JOptionPane.ERROR_MESSAGE;
+                JOptionPane.showMessageDialog(null, "Podczas uruchamiania skryptu NgSpice wystąpił błąd: " + e.getMessage(), "Błąd zapisu", mc);
+            }
         }
     }
 
@@ -198,10 +226,16 @@ public class CicuitSimulatorMain implements ActionListener {
 
         menu = new JMenu("Symulacja");
 
+        item = new JMenuItem("Uruchom symulacje");
+        item.setActionCommand("simulate");
+        item.addActionListener(this);
+        menu.add(item);
+
+        menu.addSeparator();
+
         item = new JMenuItem("Preferencje");
         item.setActionCommand("preferences");
         item.addActionListener(this);
-
         menu.add(item);
 
         menuBar.add(menu);
